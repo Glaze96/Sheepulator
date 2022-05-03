@@ -6,7 +6,7 @@
 #include <vector>
 
 #include <stdlib.h>
-#include <time.h>   
+#include <time.h>
 
 #include "src/LTimer.h"
 #include "src/entities/sheep.h"
@@ -46,39 +46,70 @@ int main(int argc, char *args[])
   LTimer fpsTimer;
 
   LTimer capTimer;
-  int countedFrames = 0;
+  uint32_t countedFrames = 0;
   fpsTimer.start();
 
   float sineOffset = 0.0f;
 
   std::vector<Sheep> sheepList;
 
-  for (int i = 0; i < 20000; i++) {
-    float randX = rand() % SCREEN_WIDTH - 1;
-    float randY = rand() % SCREEN_HEIGHT - 1;
-    sheepList.push_back(Sheep(randX, randY));
-  }
+  bool running = true;
 
-  while (1)
+  while (running)
   {
     capTimer.start();
 
-    if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
-      break;
+    while (SDL_PollEvent(&event))
+    {
+      /* We are only worried about SDL_KEYDOWN and SDL_KEYUP events */
+      switch (event.type)
+      {
+      case SDL_KEYDOWN:
+        if (event.key.keysym.sym == SDLK_SPACE)
+        {
+          sheepList.clear();
+          for (int i = 0; i < 5000; i++)
+          {
+            float randX = rand() % SCREEN_WIDTH - 1;
+            float randY = rand() % SCREEN_HEIGHT - 1;
+            sheepList.push_back(Sheep(randX, randY, (rand() % 25) / 100.0f, &sheepList));
+          }
+
+          for (auto &sheep : sheepList)
+          {
+            sheep.init();
+          }
+        }
+
+        printf("Key press detected\n");
+        break;
+
+      case SDL_KEYUP:
+        printf("Key release detected\n");
+        break;
+
+      case SDL_QUIT:
+        SDL_Quit();
+        running = false;
+        break;
+
+      default:
+        break;
+      }
+    }
 
     float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
-    if (avgFPS > 2000000)
-      avgFPS = 0;
 
     std::cout << "Average FPS: " << avgFPS << "\n";
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
 
-    SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-    for (auto &sheep : sheepList) {
-      sheep.move(rand() % 11 - 5,  rand() % 11 - 5);
+    for (auto &sheep : sheepList)
+    {
+      sheep.update(countedFrames);
       sheep.render(renderer);
     }
 

@@ -1,0 +1,35 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++.exe build active file",
+			"command": "D:\\msys64\\mingw64\\bin\\g++.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"${file}",
+				"-o",
+				"${fileDirname}\\bin\\${fileBasenameNoExtension}.exe",
+				"-I./include",
+				"-L./lib",
+				"-lsfml-system",
+				"-lsfml-window",
+				"-lsfml-graphics",
+				"-lsfml-network",
+				"-lsfml-audio",
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compiler: \"D:\\msys64\\mingw64\\bin\\g++.exe\""
+		}
+	]
+}

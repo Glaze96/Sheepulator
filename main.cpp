@@ -67,13 +67,13 @@ int main(int argc, char *args[])
           sheepList.clear();
 
           // GENERATE NEW SHEEPS
-          int newSheepAmmout = 20000;
+          int newSheepAmmout = 10000;
           for (int i = 0; i < newSheepAmmout; i++) 
           {
             float randX = (rand() % (int)SCREEN_WIDTH - 1);
             float randY = (rand() % (int)SCREEN_HEIGHT - 1);
             // printf("X-RAND: %f, Y-RAND: %f \n",randX, randY);
-            Sheep sheep = Sheep(randX, randY, 0.1f);
+            Sheep sheep = Sheep(randX, randY, 1.f);
             sheepList.push_back(sheep);
           }
           // Init sheeps in sheeps list
@@ -82,6 +82,10 @@ int main(int argc, char *args[])
           {
             sheepList[i].init(&sheepList);
           }
+        }
+
+        if (event.key.keysym.sym == SDLK_ESCAPE) {
+          running = false;
         }
 
         printf("Key press detected\n");

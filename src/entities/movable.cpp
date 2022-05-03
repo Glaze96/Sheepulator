@@ -7,12 +7,12 @@ Movable::Movable() : m_speed(0.1f) {
 
 void Movable::move(float x, float y)
 {
-  m_position.add(x, y);
+  move(Vector2(x, y));
 }
 
 void Movable::move(const Vector2 &distance)
 {
-  m_position.add(distance);
+  m_position += distance;
 }
 
 void Movable::setTarget(const Vector2 &position)

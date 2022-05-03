@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <iostream>
 
 class Vector2
 {
@@ -7,18 +8,6 @@ public:
   Vector2() : X(0.0f), Y(0.0f) {}
   Vector2(float x, float y) : X(x), Y(y) {}
   float X, Y;
-
-  void add(const Vector2 &b)
-  {
-    X += b.X;
-    Y += b.Y;
-  }
-
-  void add(float x, float y)
-  {
-    X += x;
-    Y += y;
-  }
 
   float magnitude()
   {
@@ -30,17 +19,24 @@ public:
     return Vector2(this->X / magnitude(), this->Y / magnitude());
   }
 
-  float distanceTo(const Vector2 &b) {
+  float distanceTo(const Vector2 &b)
+  {
     return Distance(*this, b);
+  }
+
+  void print()
+  {
+    std::cout << "VECTOR - X: " << X << ", Y: " << Y << std::endl;
   }
 
   Vector2 operator-(const Vector2 &b)
   {
-    // Vector2 a;
-    // a.X = this->X - b.X;
-    // a.Y = this->Y - b.Y;
-    // return a;
     return Vector2(this->X - b.X, this->Y - b.Y);
+  }
+
+  Vector2 operator+(const Vector2 &b)
+  {
+    return Vector2(this->X + b.X, this->Y +- b.Y);
   }
 
   Vector2 operator*(float v)
@@ -49,6 +45,18 @@ public:
     a.X = this->X * v;
     a.Y = this->Y * v;
     return a;
+  }
+
+  void operator+=(const Vector2 &b)
+  {
+    this->X += b.X;
+    this->Y += b.Y;
+  }
+
+  void operator-=(const Vector2 &b)
+  {
+    this->X -= b.X;
+    this->Y -= b.Y;
   }
 
   static float Distance(const Vector2 &a, const Vector2 &b)

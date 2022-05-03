@@ -1,1 +1,1 @@
-# SFML-Pixel-Viewer
+# Pixel-Viewer

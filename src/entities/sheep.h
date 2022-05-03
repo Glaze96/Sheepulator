@@ -3,26 +3,31 @@
 #include "renderable.h"
 #include <stdlib.h>
 #include <stdint.h>
+#include "../math/vector2.h"
 
 class Sheep : public Renderable
 {
 public:
-  Sheep(float startX, float startY, float speed, std::vector<Sheep> *sheepList);
+  Sheep(float startX, float startY, float speed);
+  void init(std::vector<Sheep> *sheepList);
 
 public:
   void move(float x, float y);
-  void update(uint32_t countedFrames);
-  void init();
+  void move(const Vector2 &distance);
+  
+  void setTarget(const Vector2 &position);
+  void moveToTarget();
+
+  void update(uint32_t countedFrames); // Main logic loop 
 
 private:
-  void moveToNearestSheep(const Sheep *nearestSheep);
+  void moveToNearestSheep(Sheep *nearestSheep);
   Sheep *findNearestSheep();
-
-  float calcDistanceSquared(float x, float y);
 
 private:
   float m_xVelocity, m_yVelocity;
   std::vector<Sheep> *m_sheepList;
   Sheep *m_nearestSheep;
   float m_speed;
+  Vector2 m_target;
 };

@@ -3,51 +3,80 @@
 #include <algorithm>
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <iostream>
 
-Sheep::Sheep(float startX, float startY, float speed, std::vector<Sheep> *sheepList) : m_sheepList(sheepList), m_speed(speed)
+Sheep::Sheep(float startX, float startY, float speed) : m_speed(speed)
 {
-  setPosition(startX, startY);
+  m_position.X = startX;
+  m_position.Y = startY;
+  // printf("X-START: %f, Y-START: %f \n", m_position.X, m_position.X);
 }
 
-void Sheep::init()
+void Sheep::init(std::vector<Sheep> *sheepList)
 {
+  m_sheepList = sheepList;
   m_nearestSheep = findNearestSheep();
 }
 
 void Sheep::move(float x, float y)
 {
-  m_x += x;
-  m_y += y;
+  m_position.add(x, y);
 }
 
+void Sheep::move(const Vector2 &distance)
+{
+  m_position.add(distance);
+}
+
+void Sheep::setTarget(const Vector2 &position)
+{
+  m_target = position;
+}
+
+void Sheep::moveToTarget()
+{
+  Vector2 dif = m_target - m_position;
+  move(dif.normalized() * m_speed);
+}
+
+// MAIN LOGIC LOOP OF THE SHEEP
 void Sheep::update(uint32_t countedFrames)
 {
-  if (m_nearestSheep != nullptr)
-    moveToNearestSheep(m_nearestSheep);
+  moveToNearestSheep(m_nearestSheep);
 
-  move(rand() % 5 - 2, rand() % 5 - 2);
+  // moveToTarget();
 }
 
-void Sheep::moveToNearestSheep(const Sheep *nearestSheep)
+void Sheep::moveToNearestSheep(Sheep *nearestSheep)
 {
-  float x = nearestSheep->m_x - m_x;
-  float y = nearestSheep->m_y - m_y;
-  move(x * m_speed, y * m_speed);
-}
-
-float Sheep::calcDistanceSquared(float x, float y)
-{
-  return ((x - m_x) * (x - m_x)) + ((y - m_y) * (y - m_y));
+  Vector2 dif = (nearestSheep->m_position - m_position);
+  if (dif.magnitude() > 1.0f)
+    move(dif.normalized() * m_speed);
 }
 
 Sheep *Sheep::findNearestSheep()
 {
-  float currentDistanceToSheep = 1000000;
+  int numSheeps = m_sheepList->size();
+  int lastNearest = 0;
+  int nearestIndex = 0;
+  float minDistance = 100000000000;
 
-  auto &nearestSheep = *std::min_element(
-      m_sheepList->begin(), m_sheepList->end(),
-      [](auto &a, auto &b)
-      { return a.calcDistanceSquared(b.m_x, b.m_y); });
+  for (int i = 0; i < numSheeps; i++)
+  {
+    float newDistance = Vector2::Distance(m_sheepList->at(i).m_position, m_position);
 
-  return &nearestSheep;
+    if (newDistance < 1.0f)
+      break;
+
+    if (newDistance < minDistance)
+    {
+      nearestIndex = i;
+      minDistance = newDistance;
+    }
+  }
+
+  // std::cout << "nearest index: " << nearestIndex << std::endl;
+
+  return &m_sheepList->at(nearestIndex);
 }

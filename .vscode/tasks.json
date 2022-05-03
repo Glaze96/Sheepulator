@@ -8,9 +8,9 @@
 			"args": [
 				"-fdiagnostics-color=always",
 				"-g",
-				"${workspaceFolder}\\pogram.cpp",
+				"${workspaceFolder}\\main.cpp",
 				"-o",
-				"${workspaceFolder}\\bin\\pogram.exe",
+				"${workspaceFolder}\\bin\\sheepulator.exe",
 				"./src/*.cpp",
 				"./src/entities/*.cpp",
 				"-I./include",

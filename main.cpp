@@ -68,16 +68,18 @@ int main(int argc, char *args[])
         if (event.key.keysym.sym == SDLK_SPACE)
         {
           sheepList.clear();
-          for (int i = 0; i < 5000; i++)
+          for (int i = 0; i < 20000; i++)
           {
-            float randX = rand() % SCREEN_WIDTH - 1;
-            float randY = rand() % SCREEN_HEIGHT - 1;
-            sheepList.push_back(Sheep(randX, randY, (rand() % 25) / 100.0f, &sheepList));
+            float randX = (rand() % (int)SCREEN_WIDTH - 1);
+            float randY = (rand() % (int)SCREEN_HEIGHT - 1);
+            // printf("X-RAND: %f, Y-RAND: %f \n",randX, randY);
+            Sheep sheep = Sheep(randX, randY, 0.1f);
+            sheepList.push_back(sheep);
           }
 
-          for (auto &sheep : sheepList)
+          for (int i = 0; i < sheepList.size(); i++)
           {
-            sheep.init();
+            sheepList[i].init(&sheepList);
           }
         }
 
@@ -99,7 +101,8 @@ int main(int argc, char *args[])
 
     float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
 
-    std::cout << "Average FPS: " << avgFPS << "\n";
+    if (countedFrames % 60 == 0)
+      std::cout << "Average FPS: " << avgFPS << "\n";
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);

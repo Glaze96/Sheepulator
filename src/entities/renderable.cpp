@@ -1,13 +1,8 @@
 #include "renderable.h"
 #include <SDL2/SDL.h>
+#include <stdio.h>
 
 void Renderable::render(SDL_Renderer *renderer)
 {
-  SDL_RenderDrawPoint(renderer, m_x, m_y);
-}
-
-void Renderable::setPosition(float x, float y)
-{
-  m_x = x;
-  m_y = y;
+  SDL_RenderDrawPoint(renderer, int(m_position.X), int(m_position.Y));
 }

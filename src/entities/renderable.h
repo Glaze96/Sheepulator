@@ -1,20 +1,18 @@
 struct SDL_Renderer;
+#include "../math/vector2.h"
 
 class Renderable
 {
 public:
-  Renderable() : m_x(0), m_y(0){};
+  Renderable() {};
 
 public:
   void render(SDL_Renderer *renderer);
 
 public:
-  float getX() { return m_x; };
-  float getY() { return m_y; };
-  
-  void setPosition(float x, float y);
+  void setPosition(const Vector2 &position);
 
   // Position (in screen space 'currently')
 protected:
-  float m_x, m_y;
+  Vector2 m_position;
 };

@@ -11,8 +11,8 @@
 #include "src/LTimer.h"
 #include "src/entities/sheep.h"
 
-#define SCREEN_WIDTH 1920
-#define SCREEN_HEIGHT 1080
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
 
 const int SCREEN_FPS = 60;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
@@ -29,7 +29,7 @@ int main(int argc, char *args[])
 
   SDL_Renderer *renderer;
 
-  srand(time(NULL));
+  srand(time(NULL)); // random seed
 
   // Initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -44,31 +44,31 @@ int main(int argc, char *args[])
   SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
 
   LTimer fpsTimer;
-
   LTimer capTimer;
+
   uint32_t countedFrames = 0;
   fpsTimer.start();
 
-  float sineOffset = 0.0f;
+  std::vector<Sheep> sheepList; // Holds all the sheep (objects) in a vector
+  
+  bool running = true; // check if we want to quit
 
-  std::vector<Sheep> sheepList;
-
-  bool running = true;
-
-  while (running)
+  while (running) // main program loop
   {
     capTimer.start();
 
     while (SDL_PollEvent(&event))
     {
-      /* We are only worried about SDL_KEYDOWN and SDL_KEYUP events */
       switch (event.type)
       {
       case SDL_KEYDOWN:
-        if (event.key.keysym.sym == SDLK_SPACE)
+        if (event.key.keysym.sym == SDLK_SPACE) // ON SPACE
         {
           sheepList.clear();
-          for (int i = 0; i < 20000; i++)
+
+          // GENERATE NEW SHEEPS
+          int newSheepAmmout = 20000;
+          for (int i = 0; i < newSheepAmmout; i++) 
           {
             float randX = (rand() % (int)SCREEN_WIDTH - 1);
             float randY = (rand() % (int)SCREEN_HEIGHT - 1);
@@ -76,8 +76,9 @@ int main(int argc, char *args[])
             Sheep sheep = Sheep(randX, randY, 0.1f);
             sheepList.push_back(sheep);
           }
-
-          for (int i = 0; i < sheepList.size(); i++)
+          // Init sheeps in sheeps list
+          //  ---  Could maybe be baked into generation?
+          for (int i = 0; i < newSheepAmmout; i++)
           {
             sheepList[i].init(&sheepList);
           }
@@ -100,20 +101,24 @@ int main(int argc, char *args[])
     }
 
     float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
-
     if (countedFrames % 60 == 0)
       std::cout << "Average FPS: " << avgFPS << "\n";
 
+    // Clear window to black
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
 
+
+    // Sets sheep color
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
+    // Main loop for sheep updates
     for (auto &sheep : sheepList)
     {
       sheep.update(countedFrames);
       sheep.render(renderer);
     }
+
 
     SDL_RenderPresent(renderer);
 

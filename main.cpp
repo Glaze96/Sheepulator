@@ -49,8 +49,9 @@ int main(int argc, char *args[])
   uint32_t countedFrames = 0;
   fpsTimer.start();
 
-  std::vector<Sheep> sheepList; // Holds all the sheep (objects) in a vector
-  
+  std::vector<Movable *> sheepList; // Holds all the sheep (objects) in a vector
+  std::vector<Movable *> dogList;   // Holds all the sheep (objects) in a vector
+
   bool running = true; // check if we want to quit
 
   while (running) // main program loop
@@ -64,27 +65,34 @@ int main(int argc, char *args[])
       case SDL_KEYDOWN:
         if (event.key.keysym.sym == SDLK_SPACE) // ON SPACE
         {
+          for (auto sheep : sheepList)
+            delete sheep;
           sheepList.clear();
+
+          for (auto dog : dogList)
+            delete dog;
+          dogList.clear();
 
           // GENERATE NEW SHEEPS
           int newSheepAmmout = 10000;
-          for (int i = 0; i < newSheepAmmout; i++) 
+          for (int i = 0; i < newSheepAmmout; i++)
           {
             float randX = (rand() % (int)SCREEN_WIDTH - 1);
             float randY = (rand() % (int)SCREEN_HEIGHT - 1);
             // printf("X-RAND: %f, Y-RAND: %f \n",randX, randY);
-            Sheep sheep = Sheep(randX, randY, 1.f);
+            Sheep *sheep = new Sheep(randX, randY, 1.f, sheepList, dogList);
             sheepList.push_back(sheep);
           }
           // Init sheeps in sheeps list
           //  ---  Could maybe be baked into generation?
           for (int i = 0; i < newSheepAmmout; i++)
           {
-            sheepList[i].init(&sheepList);
+            Sheep *sheep = (Sheep *)sheepList.at(i);
           }
         }
 
-        if (event.key.keysym.sym == SDLK_ESCAPE) {
+        if (event.key.keysym.sym == SDLK_ESCAPE)
+        {
           running = false;
         }
 
@@ -112,17 +120,16 @@ int main(int argc, char *args[])
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
 
-
     // Sets sheep color
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
     // Main loop for sheep updates
-    for (auto &sheep : sheepList)
+    for (int i = 0; i < sheepList.size(); i++)
     {
-      sheep.update(countedFrames);
-      sheep.render(renderer);
+      Sheep *sheep = (Sheep *)sheepList.at(i);
+      sheep->update(countedFrames);
+      sheep->render(renderer);
     }
-
 
     SDL_RenderPresent(renderer);
 

@@ -4,21 +4,24 @@
 #include <stdint.h>
 #include "../math/vector2.h"
 #include "movable.h"
+#include "dog.h"
 
 class Sheep : public Movable
 {
 public:
-  Sheep(float startX, float startY, float speed);
-  void init(std::vector<Sheep> *sheepList);
+  Sheep(float startX, float startY, float speed, std::vector<Movable *> &sheepList, std::vector<Movable *> &dogList);
+  void init();
 
 public:
-  void update(uint32_t countedFrames); // Main logic loop 
+  void update(uint32_t countedFrames); // Main logic loop
 
 private:
   void moveToNearestSheep(Sheep *nearestSheep);
-  Sheep *findNearestSheep();
+  Movable *findNearest(const std::vector<Movable *> &list);
 
 private:
-  std::vector<Sheep> *m_sheepList;
-  Sheep *m_nearestSheep;
+  std::vector<Movable *> &m_sheepList;
+  std::vector<Movable *> &m_dogList;
+  Movable *m_nearestSheep;
+  Movable *m_nearestDog;
 };

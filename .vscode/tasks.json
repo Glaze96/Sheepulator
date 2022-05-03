@@ -9,6 +9,7 @@
 				"-fdiagnostics-color=always",
 				"-g",
 				"${file}",
+				"src/*.cpp",
 				"-o",
 				"${fileDirname}\\bin\\${fileBasenameNoExtension}.exe",
 				"-I./include",

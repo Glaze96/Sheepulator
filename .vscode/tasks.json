@@ -4,7 +4,7 @@
 		{
 			"type": "cppbuild",
 			"label": "C/C++: g++.exe build active file",
-			"command": "g++",
+			"command": "D:\\msys64\\mingw64\\bin\\g++.exe",
 			"args": [
 				"-fdiagnostics-color=always",
 				"-g",
@@ -13,11 +13,10 @@
 				"${fileDirname}\\bin\\${fileBasenameNoExtension}.exe",
 				"-I./include",
 				"-L./lib",
-				"-lsfml-system",
-				"-lsfml-window",
-				"-lsfml-graphics",
-				"-lsfml-network",
-				"-lsfml-audio",
+				"-lSDL2",
+				"-lSDL2main",
+				"-lSDL2_test",
+				"-lSDL2.dll"
 			],
 			"options": {
 				"cwd": "${fileDirname}"
@@ -29,7 +28,7 @@
 				"kind": "build",
 				"isDefault": true
 			},
-			"detail": "compiler: \"D:\\msys64\\mingw64\\bin\\g++.exe\""
+			"detail": "compiler: D:\\msys64\\mingw64\\bin\\g++.exe"
 		}
 	]
 }

@@ -89,7 +89,6 @@ int main(int argc, char *args[])
         break;
 
       case SDL_QUIT:
-        SDL_Quit();
         running = false;
         break;
 

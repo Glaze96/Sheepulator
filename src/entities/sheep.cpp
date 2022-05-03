@@ -22,12 +22,27 @@ void Sheep::update(uint32_t countedFrames)
 {
   // moveToNearestSheep(m_nearestSheep);
 
-  move(rand() % 11 - 5, rand() % 11 - 5);
+  if (m_dogList.size() > 0)
+  {
+    m_nearestDog = findNearest(m_dogList);
+    moveAwayFromDog(m_nearestDog);
+  }
+  else
+  {
+    move(rand() % 11 - 5, rand() % 11 - 5);
+  }
 }
 
-void Sheep::moveToNearestSheep(Sheep *nearestSheep)
+void Sheep::moveToNearestSheep(Movable *nearestSheep)
 {
-  Vector2 dif = (nearestSheep->m_position - m_position);
+  Vector2 dif = (nearestSheep->getPosition() - m_position);
+  if (dif.magnitude() > 5.0f)
+    move(dif.normalized() * m_speed);
+}
+
+void Sheep::moveAwayFromDog(Movable *nearestDog)
+{
+  Vector2 dif = (m_position - nearestDog->getPosition());
   if (dif.magnitude() > 5.0f)
     move(dif.normalized() * m_speed);
 }

@@ -16,7 +16,9 @@ public:
   void update(uint32_t countedFrames); // Main logic loop
 
 private:
-  void moveToNearestSheep(Sheep *nearestSheep);
+  void moveToNearestSheep(Movable *nearestSheep);
+  void moveAwayFromDog(Movable *nearestSheep);
+
   Movable *findNearest(const std::vector<Movable *> &list);
 
 private:

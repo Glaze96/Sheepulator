@@ -10,6 +10,7 @@
 
 #include "src/LTimer.h"
 #include "src/entities/sheep.h"
+#include "src/entities/dog.h"
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
@@ -74,21 +75,23 @@ int main(int argc, char *args[])
           dogList.clear();
 
           // GENERATE NEW SHEEPS
-          int newSheepAmmout = 10000;
+          int newSheepAmmout = 100000;
           for (int i = 0; i < newSheepAmmout; i++)
           {
             float randX = (rand() % (int)SCREEN_WIDTH - 1);
             float randY = (rand() % (int)SCREEN_HEIGHT - 1);
             // printf("X-RAND: %f, Y-RAND: %f \n",randX, randY);
-            Sheep *sheep = new Sheep(randX, randY, 1.f, sheepList, dogList);
+            Sheep *sheep = new Sheep(randX, randY, 0.5f, sheepList, dogList);
             sheepList.push_back(sheep);
           }
-          // Init sheeps in sheeps list
-          //  ---  Could maybe be baked into generation?
-          for (int i = 0; i < newSheepAmmout; i++)
-          {
-            Sheep *sheep = (Sheep *)sheepList.at(i);
-          }
+        }
+
+        if (event.key.keysym.sym == SDLK_1)
+        {
+          float randX = (rand() % (int)SCREEN_WIDTH - 1);
+          float randY = (rand() % (int)SCREEN_HEIGHT - 1);
+          Dog *dog = new Dog(randX, randY, 2.0f, sheepList, dogList);
+          dogList.push_back(dog);
         }
 
         if (event.key.keysym.sym == SDLK_ESCAPE)
@@ -129,6 +132,14 @@ int main(int argc, char *args[])
       Sheep *sheep = (Sheep *)sheepList.at(i);
       sheep->update(countedFrames);
       sheep->render(renderer);
+    }
+
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    for (int i = 0; i < dogList.size(); i++)
+    {
+      Dog *dog = (Dog *)dogList.at(i);
+      dog->update(countedFrames);
+      dog->render(renderer);
     }
 
     SDL_RenderPresent(renderer);

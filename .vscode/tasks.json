@@ -8,10 +8,9 @@
 			"args": [
 				"-fdiagnostics-color=always",
 				"-g",
-				"${file}",
-				"src/*.cpp",
+				"${workspaceFolder}\\pogram.cpp",
 				"-o",
-				"${fileDirname}\\bin\\${fileBasenameNoExtension}.exe",
+				"${workspaceFolder}\\bin\\${fileBasenameNoExtension}.exe",
 				"-I./include",
 				"-L./lib",
 				"-lSDL2",
@@ -20,7 +19,7 @@
 				"-lSDL2.dll"
 			],
 			"options": {
-				"cwd": "${fileDirname}"
+				"cwd": "${workspaceFolder}"
 			},
 			"problemMatcher": [
 				"$gcc"

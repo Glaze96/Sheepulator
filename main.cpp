@@ -11,6 +11,7 @@
 #include "src/sheepGame.h"
 
 #include "src/settings.h"
+#include "src/input/inputManager.h"
 
 const int SCREEN_FPS = 60;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
@@ -48,6 +49,7 @@ int main(int argc, char *args[])
 
   while (running) // main program loop
   {
+    InputManager::getInstance()->update();
     capTimer.start();
 
     float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
@@ -55,7 +57,6 @@ int main(int argc, char *args[])
       std::cout << "Average FPS: " << avgFPS << "\n";
 
     running = game.update(countedFrames);
-    
     // Clear window to black
     SDL_SetRenderDrawColor(renderer, 5, 50, 10, 255);
     SDL_RenderClear(renderer);

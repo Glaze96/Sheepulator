@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include "input/inputManager.h"
 
 SheepGame::SheepGame(SDL_Renderer **renderer, uint32_t screenWidth, uint32_t screenHeight) : Game(renderer, screenWidth, screenHeight){};
 
@@ -28,66 +29,55 @@ bool SheepGame::update(uint32_t countedFrames)
   if (countedFrames % 60 == 0)
     std::cout << "Num sheep: " << m_sheepList.size() << std::endl;
 
-  SDL_PollEvent(&m_event);
-  switch (m_event.type)
+  InputManager *input = InputManager::getInstance();
+
+  if (input->isKeyDown(SDL_SCANCODE_SPACE))
   {
-  case SDL_KEYDOWN:
-    if (m_event.key.keysym.sym == SDLK_SPACE) // ON SPACE
-    {
-      for (auto sheep : m_sheepList)
-        delete sheep;
-      m_sheepList.clear();
+    for (auto sheep : m_sheepList)
+      delete sheep;
+    m_sheepList.clear();
 
-      for (auto dog : m_dogList)
-        delete dog;
-      m_dogList.clear();
+    for (auto dog : m_dogList)
+      delete dog;
+    m_dogList.clear();
 
-      // TODO: Clear sheep grid
-    }
+    // TODO: Clear sheep grid
+  }
 
-    if (m_event.key.keysym.sym == SDLK_1)
-    {
-      // GENERATE NEW SHEEPS
-      for (int i = 0; i < m_numSheep; i++)
-      {
-        float randX = (rand() % (int)m_screenWidth - 1);
-        float randY = (rand() % (int)m_screenHeight - 1);
-        Sheep *sheep = new Sheep(randX, randY, 1.5f, 20, &m_sheepList, &m_dogList, &m_sheepGrid);
-        m_sheepList.push_back(sheep);
-      }
-
-      // INIT NEW SHEEP
-      for (int i = 0; i < m_numSheep; i++)
-      {
-        ((Sheep *)m_sheepList[i])->init();
-      }
-    }
-
-    if (m_event.key.keysym.sym == SDLK_2)
+  if (input->isKeyDown(SDL_SCANCODE_1))
+  {
+    // GENERATE NEW SHEEPS
+    for (int i = 0; i < m_numSheep; i++)
     {
       float randX = (rand() % (int)m_screenWidth - 1);
       float randY = (rand() % (int)m_screenHeight - 1);
-      Dog *dog = new Dog(randX, randY, 0.8f, m_sheepList, m_dogList);
-      m_dogList.push_back(dog);
+      Sheep *sheep = new Sheep(randX, randY, 1.5f, 20, &m_sheepList, &m_dogList, &m_sheepGrid);
+      m_sheepList.push_back(sheep);
     }
 
-    if (m_event.key.keysym.sym == SDLK_ESCAPE)
-      return false; // Stop looping
-
-    printf("Key press detected\n");
-    break;
-
-  case SDL_KEYUP:
-    printf("Key release detected\n");
-    break;
-
-  case SDL_QUIT:
-    return false; // Stop looping
-    break;
-
-  default:
-    break;
+    // INIT NEW SHEEP
+    for (int i = 0; i < m_numSheep; i++)
+    {
+      ((Sheep *)m_sheepList[i])->init();
+    }
   }
+
+  if (input->isKeyDown(SDL_SCANCODE_2))
+  {
+    float randX = (rand() % (int)m_screenWidth - 1);
+    float randY = (rand() % (int)m_screenHeight - 1);
+    Dog *dog = new Dog(randX, randY, 0.8f, m_sheepList, m_dogList);
+    m_dogList.push_back(dog);
+  }
+
+  if (input->isKeyDown(SDL_SCANCODE_ESCAPE)) {
+    return false;
+  }
+  
+  if (input->quitRequested()) {
+    return false;
+  }
+
 
   updateSheep(countedFrames);
 
@@ -121,14 +111,13 @@ void SheepGame::render()
   }
 };
 
-
 /*
  *
  * Sheep update:
- * 
+ *
  * for each sheep do:
  * sheep->update(cF);
- * 
+ *
  */
 
 void SheepGame::updateSheep(uint32_t countedFrames)
@@ -137,23 +126,6 @@ void SheepGame::updateSheep(uint32_t countedFrames)
   {
     Sheep *sheep = (Sheep *)m_sheepList.at(i);
 
-    sheep->update(countedFrames); //update sheep will also update sheep instances pos in grid.
+    sheep->update(countedFrames); // update sheep will also update sheep instances pos in grid.
   }
 }
-
-
-// void SheepGame::updateSheep(uint32_t countedFrames)
-// {
-//   for (int i = 0; i < m_sheepList.size(); i++)
-//   {
-//     Sheep *sheep = (Sheep *)m_sheepList.at(i);
-
-//     int xPos = std::clamp((int)sheep->getPosition().X, 0, (int)m_screenWidth - 1);
-//     int yPos = std::clamp((int)sheep->getPosition().Y, 0, (int)m_screenHeight - 1);
-
-//     // Update grid positions for sheep
-//     m_sheepGrid[yPos][xPos] = sheep;
-
-//     sheep->update(countedFrames);
-//   }
-// }

@@ -22,8 +22,6 @@ void Sheep::init()
 
 void Sheep::update(uint32_t countedFrames)
 {
-  // moveToNearestSheep(m_nearestSheep);
-
   if (m_dogList.size() > 0)
   {
     m_nearestDog = findNearest(m_dogList);
@@ -58,7 +56,7 @@ Movable *Sheep::findNearest(const std::vector<Movable *> &list)
   int numMovables = list.size();
   int lastNearest = 0;
   int nearestIndex = 0;
-  float minDistance = 100000000000;
+  float minDistance = INFINITY;
 
   for (int i = 0; i < numMovables; i++)
   {
@@ -73,9 +71,5 @@ Movable *Sheep::findNearest(const std::vector<Movable *> &list)
       minDistance = newDistance;
     }
   }
-  // const auto nearestSheep = *std::min_element(
-  //   m_sheepList.begin(), m_sheepList.end(),
-  //   [](auto &a, auto &b) { return a.calcDistanceSquared(b); })
-
   return list.at(nearestIndex);
 }

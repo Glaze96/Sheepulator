@@ -11,6 +11,7 @@
 #include "src/LTimer.h"
 #include "src/entities/sheep.h"
 #include "src/entities/dog.h"
+#include "src/sheepGame.h"
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
@@ -20,15 +21,12 @@ const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 int main(int argc, char *args[])
 {
-  SDL_Event event;
-
   // The window we'll be rendering to
   SDL_Window *window = NULL;
 
-  // The surface contained by the window
-  SDL_Surface *screenSurface = NULL;
-
   SDL_Renderer *renderer;
+
+  SheepGame game(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
   srand(time(NULL)); // random seed
 
@@ -38,11 +36,9 @@ int main(int argc, char *args[])
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
     return -1;
   }
+
   // Create window
   SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, 0, &window, &renderer);
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-  SDL_RenderClear(renderer);
-  SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
 
   LTimer fpsTimer;
   LTimer capTimer;
@@ -50,70 +46,15 @@ int main(int argc, char *args[])
   uint32_t countedFrames = 0;
   fpsTimer.start();
 
-  std::vector<Movable *> sheepList; // Holds all the sheep (objects) in a vector
-  std::vector<Movable *> dogList;   // Holds all the sheep (objects) in a vector
-
   bool running = true; // check if we want to quit
+
+  game.init();
 
   while (running) // main program loop
   {
     capTimer.start();
 
-    while (SDL_PollEvent(&event))
-    {
-      switch (event.type)
-      {
-      case SDL_KEYDOWN:
-        if (event.key.keysym.sym == SDLK_SPACE) // ON SPACE
-        {
-          for (auto sheep : sheepList)
-            delete sheep;
-          sheepList.clear();
-
-          for (auto dog : dogList)
-            delete dog;
-          dogList.clear();
-
-          // GENERATE NEW SHEEPS
-          int newSheepAmmout = 10000;
-          for (int i = 0; i < newSheepAmmout; i++)
-          {
-            float randX = (rand() % (int)SCREEN_WIDTH - 1);
-            float randY = (rand() % (int)SCREEN_HEIGHT - 1);
-            // printf("X-RAND: %f, Y-RAND: %f \n",randX, randY);
-            Sheep *sheep = new Sheep(randX, randY, 0.5f, sheepList, dogList);
-            sheepList.push_back(sheep);
-          }
-        }
-
-        if (event.key.keysym.sym == SDLK_1)
-        {
-          float randX = (rand() % (int)SCREEN_WIDTH - 1);
-          float randY = (rand() % (int)SCREEN_HEIGHT - 1);
-          Dog *dog = new Dog(randX, randY, 2.0f, sheepList, dogList);
-          dogList.push_back(dog);
-        }
-
-        if (event.key.keysym.sym == SDLK_ESCAPE)
-        {
-          running = false;
-        }
-
-        printf("Key press detected\n");
-        break;
-
-      case SDL_KEYUP:
-        printf("Key release detected\n");
-        break;
-
-      case SDL_QUIT:
-        running = false;
-        break;
-
-      default:
-        break;
-      }
-    }
+    running = game.update(countedFrames);
 
     float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
     if (countedFrames % 60 == 0)
@@ -123,25 +64,9 @@ int main(int argc, char *args[])
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
 
-    // Sets sheep color
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    game.render();
 
-    // Main loop for sheep updates
-    for (int i = 0; i < sheepList.size(); i++)
-    {
-      Sheep *sheep = (Sheep *)sheepList.at(i);
-      sheep->update(countedFrames);
-      sheep->render(renderer);
-    }
-
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    for (int i = 0; i < dogList.size(); i++)
-    {
-      Dog *dog = (Dog *)dogList.at(i);
-      dog->update(countedFrames);
-      dog->render(renderer);
-    }
-
+    // Show render
     SDL_RenderPresent(renderer);
 
     ++countedFrames;

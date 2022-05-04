@@ -24,6 +24,14 @@ public:
     return Distance(*this, b);
   }
 
+  float getAngleRad() {
+    return atan2(Y, X);
+  }
+
+  float getAngleDeg() {
+    return getAngleRad()*180/ M_PI;
+  }
+
   void print()
   {
     std::cout << "VECTOR - X: " << X << ", Y: " << Y << std::endl;

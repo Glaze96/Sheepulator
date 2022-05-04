@@ -127,7 +127,7 @@ void SheepGame::render()
  * Sheep update:
  * 
  * for each sheep do:
- * sheep->update(cF, &m_sheepGrid);
+ * sheep->update(cF);
  * 
  */
 
@@ -137,7 +137,7 @@ void SheepGame::updateSheep(uint32_t countedFrames)
   {
     Sheep *sheep = (Sheep *)m_sheepList.at(i);
 
-    sheep->update(countedFrames, &m_sheepGrid, m_screenHeight, m_screenWidth); //update sheep will also update sheep instances pos in grid.
+    sheep->update(countedFrames); //update sheep will also update sheep instances pos in grid.
   }
 }
 

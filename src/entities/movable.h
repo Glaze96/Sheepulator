@@ -6,7 +6,7 @@
 class Movable : public Renderable
 {
 public:
-  Movable(float speed);
+  Movable();
 
 public:
   void move(float x, float y);

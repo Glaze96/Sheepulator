@@ -2,7 +2,7 @@
 #include "movable.h"
 #include <cmath>
 
-Movable::Movable(float speed) : m_speed(speed) {
+Movable::Movable() {
   m_directionAngle = ((rand() % 1000) - 500) / 500.f * M_PI_2;
 }
 

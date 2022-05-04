@@ -7,7 +7,6 @@
 #include "entities/movable.h"
 #include "entities/sheep.h"
 #include "entities/dog.h"
-#include "math/KDTree.hpp"
 
 class SheepGame : public Game
 {
@@ -22,5 +21,7 @@ public:
 private:
   std::vector<Movable *> m_sheepList; // Holds all the sheep (objects) in a vector
   std::vector<Movable *> m_dogList;   // Holds all the sheep (objects) in a vector
-  const uint32_t m_numSheep = 1000; // Num sheep to spawn
+  const uint32_t m_numSheep = 500;   // Num sheep to spawn
+
+  std::vector<std::vector<Movable *>> m_sheepGrid;
 };

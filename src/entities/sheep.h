@@ -9,7 +9,13 @@
 class Sheep : public Movable
 {
 public:
-  Sheep(float startX, float startY, float speed, std::vector<Movable *> &sheepList, std::vector<Movable *> &dogList);
+  Sheep(float startX,
+        float startY,
+        float speed,
+        int viewRange,
+        std::vector<Movable *> *sheepList,
+        std::vector<Movable *> &dogList,
+        std::vector<std::vector<Movable *>> *sheepGrid);
   void init();
 
 public:
@@ -21,12 +27,14 @@ private:
 
   void moveRandom();
 
-  Movable *findNearest(const std::vector<Movable *> &list);
-  Movable *findNearestNew(std::vector<Movable *> *list);
+  Movable *findNearest(const std::vector<Movable *> *list);
+  Movable *findNearestNew(std::vector<std::vector<Movable *>> *gridList, std::vector<Movable *> *list);
 
 private:
-  std::vector<Movable *> &m_sheepList;
+  std::vector<Movable *> *m_sheepList;
   std::vector<Movable *> &m_dogList;
   Movable *m_nearestSheep;
   Movable *m_nearestDog;
+  std::vector<std::vector<Movable *>> *m_sheepGrid;
+  int m_viewRange;
 };

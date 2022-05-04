@@ -8,7 +8,13 @@
 #include <iostream>
 #include <cmath>
 
-Sheep::Sheep(float startX, float startY, float speed, std::vector<Movable *> &sheepList, std::vector<Movable *> &dogList) : m_sheepList(sheepList), m_dogList(dogList), Movable(speed)
+Sheep::Sheep(float startX,
+             float startY,
+             float speed,
+             int viewRange,
+             std::vector<Movable *> *sheepList,
+             std::vector<Movable *> &dogList,
+             std::vector<std::vector<Movable *>> *sheepGrid) : Movable(), m_viewRange(viewRange), m_sheepList(sheepList), m_dogList(dogList), m_sheepGrid(sheepGrid)
 {
   m_position.X = startX;
   m_position.Y = startY;
@@ -17,28 +23,32 @@ Sheep::Sheep(float startX, float startY, float speed, std::vector<Movable *> &sh
 
 void Sheep::init()
 {
-  m_nearestSheep = findNearest(m_sheepList);
 }
 
 void Sheep::update(uint32_t countedFrames)
 {
-  if (m_dogList.size() > 0)
-  {
-    m_nearestDog = findNearest(m_dogList);
-    moveAwayFromDog(m_nearestDog);
-  }
-  else
-  {
-    moveRandom();
-    // Movable *nearest = findNearestNew(&m_sheepList);
-    // moveToNearestSheep(nearest);
-  }
+
+  moveToNearestSheep(findNearestNew(m_sheepGrid, m_sheepList));
+
+  // if (m_dogList.size() > 0)
+  // {
+  //   // m_nearestDog = findNearest(m_dogList);
+  //   moveAwayFromDog(m_nearestDog);
+  // }
+  // else
+  // {
+  //   // moveRandom();
+  // }
 }
 
 void Sheep::moveToNearestSheep(Movable *nearestSheep)
 {
-  Vector2 dif = (nearestSheep->getPosition() - m_position);
-  if (dif.magnitude() > 5.0f)
+  if (nearestSheep == nullptr)
+    return;
+
+  Vector2 dif = (nearestSheep->getPosition() - getPosition());
+
+  if (dif.magnitude() > 1.0f)
     move(dif.normalized() * m_speed);
 }
 
@@ -54,18 +64,20 @@ void Sheep::moveRandom()
   moveDirection();
 }
 
-Movable *Sheep::findNearest(const std::vector<Movable *> &list)
+Movable *Sheep::findNearest(const std::vector<Movable *> *list)
 {
-  int numMovables = list.size();
+  if (list->size() == 0)
+    return nullptr;
+  int numMovables = list->size();
   int lastNearest = 0;
   int nearestIndex = 0;
   float minDistance = INFINITY;
 
   for (int i = 0; i < numMovables; i++)
   {
-    float newDistance = Vector2::DistanceSquared(list.at(i)->getPosition(), m_position);
+    float newDistance = Vector2::DistanceSquared(list->at(i)->getPosition(), m_position);
 
-    if (newDistance < 1.0f)
+    if (newDistance < 2.0f)
       continue;
 
     if (newDistance < minDistance)
@@ -74,14 +86,35 @@ Movable *Sheep::findNearest(const std::vector<Movable *> &list)
       minDistance = newDistance;
     }
   }
-  return list.at(nearestIndex);
+  return list->at(nearestIndex);
 }
 
-Movable *Sheep::findNearestNew(std::vector<Movable *> *list)
+Movable *Sheep::findNearestNew(std::vector<std::vector<Movable *>> *gridList, std::vector<Movable *> *list)
 {
-  auto it = std::min_element(list->begin(), list->end(), [](auto a, auto b)
-                             { return Vector2::Distance(a->getPosition(), b->getPosition()); });
+  std::vector<Movable *> near;
 
-  int index = std::distance(list->begin(), it);
-  return list->at(index);
+  for (int x = m_position.X - m_viewRange; x < m_position.X + m_viewRange; x++)
+  {
+    for (int y = m_position.Y - m_viewRange; y < m_position.Y + m_viewRange; y++)
+    {
+      int xPos = x;
+      int yPos = y;
+
+      if (xPos < 0)
+        xPos = 0;
+      if (xPos > 1280 - 1)
+        xPos = 1280 - 1;
+
+      if (yPos < 0)
+        yPos = 0;
+      if (yPos > 720 - 1)
+        yPos = 720 - 1;
+
+      Movable *newMovable = gridList->at(yPos)[xPos];
+      if (newMovable != nullptr)
+        near.push_back(newMovable);
+    }
+  }
+  Movable *nearest = findNearest(&near);
+  return nearest;
 }

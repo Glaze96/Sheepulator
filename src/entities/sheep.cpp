@@ -13,7 +13,7 @@ Sheep::Sheep(float startX,
              float speed,
              int viewRange,
              std::vector<Movable *> *sheepList,
-             std::vector<Movable *> &dogList,
+             std::vector<Movable *> *dogList,
              std::vector<std::vector<Movable *>> *sheepGrid) : Movable(), m_viewRange(viewRange), m_sheepList(sheepList), m_dogList(dogList), m_sheepGrid(sheepGrid)
 {
   m_position.X = startX;
@@ -27,40 +27,27 @@ void Sheep::init()
 
 void Sheep::update(uint32_t countedFrames)
 {
-
-  moveToNearestSheep(findNearestNew(m_sheepGrid, m_sheepList));
-
-  // if (m_dogList.size() > 0)
-  // {
-  //   // m_nearestDog = findNearest(m_dogList);
-  //   moveAwayFromDog(m_nearestDog);
-  // }
-  // else
-  // {
-  //   // moveRandom();
-  // }
+  // moveTarget(findNearestNew(m_sheepGrid, m_sheepList));
+  moveTarget(findNearest(m_dogList), true);
+  moveRandom(0.05);
 }
 
-void Sheep::moveToNearestSheep(Movable *nearestSheep)
+void Sheep::moveTarget(Movable *target, bool away)
 {
-  if (nearestSheep == nullptr)
+  if (target == nullptr)
     return;
 
-  Vector2 dif = (nearestSheep->getPosition() - getPosition());
+  Vector2 dif = (target->getPosition() - getPosition());
 
-  if (dif.magnitude() > 1.0f)
-    move(dif.normalized() * m_speed);
+  Vector2 direction = away ? -dif.normalized() : dif.normalized();
+
+  if (dif.magnitude() > 5.0f)
+    move(direction * m_speed);
 }
 
-void Sheep::moveAwayFromDog(Movable *nearestDog)
+void Sheep::moveRandom(float magnitude)
 {
-  Vector2 dif = (m_position - nearestDog->getPosition());
-  move(dif.normalized() * m_speed);
-}
-
-void Sheep::moveRandom()
-{
-  m_directionAngle += ((rand() % 1000 - 499) / 500.f) * M_PI * 0.1f;
+  m_directionAngle += ((rand() % 1000 - 499) / 500.f) * M_PI * magnitude;
   moveDirection();
 }
 

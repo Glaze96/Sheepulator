@@ -39,6 +39,11 @@ public:
   {
     std::cout << "VECTOR - X: " << X << ", Y: " << Y << std::endl;
   }
+  
+  Vector2 operator-()
+  {
+    return Vector2(-this->X, -this->Y);
+  }
 
   Vector2 operator-(const Vector2 &b)
   {

@@ -14,7 +14,7 @@ public:
         float speed,
         int viewRange,
         std::vector<Movable *> *sheepList,
-        std::vector<Movable *> &dogList,
+        std::vector<Movable *> *dogList,
         std::vector<std::vector<Movable *>> *sheepGrid);
   void init();
 
@@ -22,17 +22,16 @@ public:
   void update(uint32_t countedFrames); // Main logic loop
 
 private:
-  void moveToNearestSheep(Movable *nearestSheep);
-  void moveAwayFromDog(Movable *nearestSheep);
+  void moveTarget(Movable *target, bool away = false);
 
-  void moveRandom();
+  void moveRandom(float magnitude);
 
   Movable *findNearest(const std::vector<Movable *> *list);
   Movable *findNearestNew(std::vector<std::vector<Movable *>> *gridList, std::vector<Movable *> *list);
 
 private:
   std::vector<Movable *> *m_sheepList;
-  std::vector<Movable *> &m_dogList;
+  std::vector<Movable *> *m_dogList;
   Movable *m_nearestSheep;
   Movable *m_nearestDog;
   std::vector<std::vector<Movable *>> *m_sheepGrid;

@@ -19,9 +19,13 @@ public:
   void render() override;
 
 private:
+  void updateSheep(uint32_t countedFrames);
+
+private:
   std::vector<Movable *> m_sheepList; // Holds all the sheep (objects) in a vector
   std::vector<Movable *> m_dogList;   // Holds all the sheep (objects) in a vector
-  const uint32_t m_numSheep = 500;   // Num sheep to spawn
-
   std::vector<std::vector<Movable *>> m_sheepGrid;
+  const uint32_t m_numSheep = 100; // Num sheep to spawn
+
+  // INOUT
 };

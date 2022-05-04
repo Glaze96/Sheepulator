@@ -26,7 +26,7 @@ void Sheep::init()
 }
 
 
-/*What's the point of countedFrames???
+/*
  *
  * On sheep update:
  * 1. Clear sheeps position in sheepGrid
@@ -38,35 +38,20 @@ void Sheep::init()
 void Sheep::update(uint32_t countedFrames)
 {
 
-  
-  int x = std::clamp((int)this->getPosition().X, 0, (int)Settings::SCREEN_WIDTH - 1);  //Get current coordinates
-  int y = std::clamp((int)this->getPosition().Y, 0, (int)Settings::SCREEN_HEIGHT - 1);
-  
-  
-  //std::cout << " pre nullified: " << (*ptr_sheepGrid)[y][x] << std::endl;
-  
+  int y = (int)this->getPosition().Y;
+  int x = (int)this->getPosition().X;
   (*m_sheepGrid)[y][x] = nullptr; //Clear current pos
-  
-  //std::cout << "post nullified: " << (*ptr_sheepGrid)[y][x] << std::endl;
-
 
   // moveTarget(findNearestNew(m_sheepGrid, m_sheepList));
-  moveTarget(findNearest(m_dogList), true);
-  moveRandom(0.05);
+  moveTarget(findNearest(m_dogList), true); // Move away from dogs
+  moveRandom(0.05); // Move a bit random
 
-  
-  x = std::clamp((int)this->getPosition().X, 0, (int)Settings::SCREEN_WIDTH - 1);  //Get updated coordinates
-  y = std::clamp((int)this->getPosition().Y, 0, (int)Settings::SCREEN_HEIGHT - 1);
-  
+  y = (int)this->getPosition().Y;
+  x = (int)this->getPosition().X;
+
   (*m_sheepGrid)[y][x] = (Sheep *)this;  //Set new coordinates to point to this instance of sheep
   
 }
-// void Sheep::update(uint32_t countedFrames)
-// {
-//   // moveTarget(findNearestNew(m_sheepGrid, m_sheepList));
-//   moveTarget(findNearest(m_dogList), true);
-//   moveRandom(0.05);
-// }
 
 void Sheep::moveTarget(Movable *target, bool away)
 {
@@ -120,18 +105,8 @@ Movable *Sheep::findNearestNew(std::vector<std::vector<Movable *>> *gridList, st
   {
     for (int y = getPosition().Y - m_viewRange; y < getPosition().Y + m_viewRange; y++)
     {
-      int xPos = x;
-      int yPos = y;
-
-      if (xPos < 0)
-        xPos = 0;
-      if (xPos > 1280 - 1)
-        xPos = 1280 - 1;
-
-      if (yPos < 0)
-        yPos = 0;
-      if (yPos > 720 - 1)
-        yPos = 720 - 1;
+      int xPos = std::clamp((int)this->getPosition().X, 0, (int)Settings::SCREEN_WIDTH - 1);
+      int yPos = std::clamp((int)this->getPosition().Y, 0, (int)Settings::SCREEN_HEIGHT - 1);
 
       Movable *newMovable = gridList->at(yPos)[xPos];
       if (newMovable != nullptr)

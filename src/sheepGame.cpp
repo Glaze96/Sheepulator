@@ -1,5 +1,6 @@
 #include "sheepGame.h"
 #include <iostream>
+#include <vector>
 
 SheepGame::SheepGame(SDL_Renderer **renderer, uint32_t screenWidth, uint32_t screenHeight) : Game(renderer, screenWidth, screenHeight){};
 
@@ -8,10 +9,22 @@ void SheepGame::init()
   std::cout << "1 to add 'x amount' SHEEP" << std::endl;
   std::cout << "2 to add one DOG" << std::endl;
   std::cout << "SPACE clear all" << std::endl;
+
+  // std::vector<Vector2*> positions;
+  // for (auto *pos : m_sheepList)
+  //   positions.push_back(pos);
+
+
+  // KDTree tree(positions);
+
+  // m_tree(positions);
 }
 
 bool SheepGame::update(uint32_t countedFrames)
 {
+  if (countedFrames % 60 == 0)
+    std::cout << "Num sheep: " << m_sheepList.size() << std::endl;
+
   SDL_PollEvent(&m_event);
   switch (m_event.type)
   {
@@ -48,7 +61,7 @@ bool SheepGame::update(uint32_t countedFrames)
     }
 
     if (m_event.key.keysym.sym == SDLK_ESCAPE)
-      return false;
+      return false; // Stop looping 
 
     printf("Key press detected\n");
     break;
@@ -58,7 +71,7 @@ bool SheepGame::update(uint32_t countedFrames)
     break;
 
   case SDL_QUIT:
-    return false;
+    return false; // Stop looping
     break;
 
   default:
@@ -77,7 +90,7 @@ bool SheepGame::update(uint32_t countedFrames)
     dog->update(countedFrames);
   }
 
-  return true;
+  return true; // Keep looping
 };
 
 void SheepGame::render()

@@ -30,6 +30,8 @@ void Sheep::update(uint32_t countedFrames)
   else
   {
     moveRandom();
+    // Movable *nearest = findNearestNew(&m_sheepList);
+    // moveToNearestSheep(nearest);
   }
 }
 
@@ -46,8 +48,9 @@ void Sheep::moveAwayFromDog(Movable *nearestDog)
   move(dif.normalized() * m_speed);
 }
 
-void Sheep::moveRandom() {
-  m_directionAngle += ((rand() % 1000 - 499) / 500.f) * M_PI * 0.1f; 
+void Sheep::moveRandom()
+{
+  m_directionAngle += ((rand() % 1000 - 499) / 500.f) * M_PI * 0.1f;
   moveDirection();
 }
 
@@ -72,4 +75,13 @@ Movable *Sheep::findNearest(const std::vector<Movable *> &list)
     }
   }
   return list.at(nearestIndex);
+}
+
+Movable *Sheep::findNearestNew(std::vector<Movable *> *list)
+{
+  auto it = std::min_element(list->begin(), list->end(), [](auto a, auto b)
+                             { return Vector2::Distance(a->getPosition(), b->getPosition()); });
+
+  int index = std::distance(list->begin(), it);
+  return list->at(index);
 }

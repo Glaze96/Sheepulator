@@ -22,6 +22,7 @@ private:
   void moveRandom();
 
   Movable *findNearest(const std::vector<Movable *> &list);
+  Movable *findNearestNew(std::vector<Movable *> *list);
 
 private:
   std::vector<Movable *> &m_sheepList;

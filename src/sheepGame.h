@@ -19,6 +19,7 @@ public:
   void render() override;
 
 private:
-  std::vector<Movable *> sheepList; // Holds all the sheep (objects) in a vector
-  std::vector<Movable *> dogList;   // Holds all the sheep (objects) in a vector
+  std::vector<Movable *> m_sheepList; // Holds all the sheep (objects) in a vector
+  std::vector<Movable *> m_dogList;   // Holds all the sheep (objects) in a vector
+  const uint32_t m_numSheep = 10000;
 };

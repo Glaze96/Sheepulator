@@ -4,9 +4,6 @@ struct SDL_Renderer;
 class Renderable
 {
 public:
-  Renderable(){};
-
-public:
   void render(SDL_Renderer *renderer);
 
   inline Vector2 getPosition() { return m_position; };

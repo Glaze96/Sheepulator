@@ -19,6 +19,8 @@ private:
   void moveToNearestSheep(Movable *nearestSheep);
   void moveAwayFromDog(Movable *nearestSheep);
 
+  void moveRandom();
+
   Movable *findNearest(const std::vector<Movable *> &list);
 
 private:

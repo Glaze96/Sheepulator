@@ -1,6 +1,6 @@
 #include "dog.h"
 
-Dog::Dog(float startX, float startY, float speed, std::vector<Movable *> &sheepList, std::vector<Movable *> &dogList) : m_sheepList(sheepList), m_dogList(dogList)
+Dog::Dog(float startX, float startY, float speed, std::vector<Movable *> &sheepList, std::vector<Movable *> &dogList) : m_sheepList(sheepList), m_dogList(dogList), Movable(speed)
 {
   m_position.X = startX;
   m_position.Y = startY;

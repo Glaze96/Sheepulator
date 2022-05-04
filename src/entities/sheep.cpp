@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include "sheep.h"
 #include <cmath>
 #include <algorithm>
@@ -5,8 +6,9 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <iostream>
+#include <cmath>
 
-Sheep::Sheep(float startX, float startY, float speed, std::vector<Movable *> &sheepList, std::vector<Movable *> &dogList) : m_sheepList(sheepList), m_dogList(dogList)
+Sheep::Sheep(float startX, float startY, float speed, std::vector<Movable *> &sheepList, std::vector<Movable *> &dogList) : m_sheepList(sheepList), m_dogList(dogList), Movable(speed)
 {
   m_position.X = startX;
   m_position.Y = startY;
@@ -29,7 +31,7 @@ void Sheep::update(uint32_t countedFrames)
   }
   else
   {
-    move(rand() % 11 - 5, rand() % 11 - 5);
+    moveRandom();
   }
 }
 
@@ -43,8 +45,12 @@ void Sheep::moveToNearestSheep(Movable *nearestSheep)
 void Sheep::moveAwayFromDog(Movable *nearestDog)
 {
   Vector2 dif = (m_position - nearestDog->getPosition());
-  if (dif.magnitude() > 5.0f)
-    move(dif.normalized() * m_speed);
+  move(dif.normalized() * m_speed);
+}
+
+void Sheep::moveRandom() {
+  m_directionAngle += ((rand() % 1000 - 499) / 500.f) * M_PI * 0.1f; 
+  moveDirection();
 }
 
 Movable *Sheep::findNearest(const std::vector<Movable *> &list)

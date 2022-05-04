@@ -75,7 +75,7 @@ int main(int argc, char *args[])
           dogList.clear();
 
           // GENERATE NEW SHEEPS
-          int newSheepAmmout = 100000;
+          int newSheepAmmout = 10000;
           for (int i = 0; i < newSheepAmmout; i++)
           {
             float randX = (rand() % (int)SCREEN_WIDTH - 1);

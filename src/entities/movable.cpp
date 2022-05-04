@@ -1,13 +1,23 @@
+#define _USE_MATH_DEFINES
 #include "movable.h"
+#include <cmath>
 
+Movable::Movable(float speed) : m_speed(speed) {
+  m_directionAngle = ((rand() % 1000) - 500) / 1000.f * M_PI * 2.0f;
+}
 
-Movable::Movable() : m_speed(0.1f) {
+void Movable::moveDirection() {
+  move(Vector2(cos(m_directionAngle) * m_speed, sin(m_directionAngle) * m_speed));
+}
 
+void Movable::changeDirection(float angle) {
+  m_directionAngle = angle;
 }
 
 void Movable::move(float x, float y)
 {
-  move(Vector2(x, y));
+  m_position.X += x;
+  m_position.Y += y;
 }
 
 void Movable::move(const Vector2 &distance)

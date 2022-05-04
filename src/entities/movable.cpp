@@ -7,10 +7,10 @@ Movable::Movable(float speed) : m_speed(speed) {
 }
 
 void Movable::moveDirection() {
-  move(Vector2(cos(m_directionAngle) * m_speed, sin(m_directionAngle) * m_speed));
+  move(Vector2::AngleToVector(m_directionAngle) * m_speed);
 }
 
-void Movable::changeDirection(float angle) {
+void Movable::setDirection(float angle) {
   m_directionAngle = angle;
 }
 
@@ -23,15 +23,4 @@ void Movable::move(float x, float y)
 void Movable::move(const Vector2 &distance)
 {
   m_position += distance;
-}
-
-void Movable::setTarget(const Vector2 &position)
-{
-  m_target = position;
-}
-
-void Movable::moveTowardsTarget()
-{
-  Vector2 dif = m_target - m_position;
-  move(dif.normalized() * m_speed);
 }

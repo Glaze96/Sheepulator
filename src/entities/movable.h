@@ -13,14 +13,9 @@ public:
   void move(const Vector2 &distance);
 
   void moveDirection();
-  void changeDirection(float angle);
-
-  void setTarget(const Vector2 &position);
-
-  void moveTowardsTarget();
+  void setDirection(float angle);
 
 protected:
   float m_speed; // Base speed
   float m_directionAngle; // Radians
-  Vector2 m_target;
 };

@@ -23,7 +23,7 @@ int main(int argc, char *args[])
 
   SDL_Renderer *renderer;
 
-  SheepGame game(&renderer, Settings::SCREEN_WIDTH ,Settings::SCREEN_HEIGHT);
+  SheepGame game(&renderer, Settings::SCREEN_WIDTH, Settings::SCREEN_HEIGHT);
 
   srand(time(NULL)); // random seed
 

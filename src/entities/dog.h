@@ -7,7 +7,11 @@
 class Dog : public Movable
 {
 public:
-  Dog(float startX, float startY, float speed, std::vector<Movable *> &sheepList, std::vector<Movable *> &dogList);
+  Dog(float startX,
+      float startY,
+      float speed,
+      std::vector<Movable *> &sheepList,
+      std::vector<Movable *> &dogList);
 
 public:
   void update(uint32_t countedFrames); // Main logic loop

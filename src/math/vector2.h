@@ -16,7 +16,8 @@ public:
 
   Vector2 normalized()
   {
-    return Vector2(this->X / magnitude(), this->Y / magnitude());
+    float mag = magnitude();
+    return Vector2(this->X / mag, this->Y / mag);
   }
 
   float distanceTo(const Vector2 &b)
@@ -24,12 +25,14 @@ public:
     return Distance(*this, b);
   }
 
-  float getAngleRad() {
+  float getAngleRad()
+  {
     return atan2(Y, X);
   }
 
-  float getAngleDeg() {
-    return getAngleRad()*180/ M_PI;
+  float getAngleDeg()
+  {
+    return getAngleRad() * 180 / M_PI;
   }
 
   void print()
@@ -44,7 +47,7 @@ public:
 
   Vector2 operator+(const Vector2 &b)
   {
-    return Vector2(this->X + b.X, this->Y +- b.Y);
+    return Vector2(this->X + b.X, this->Y + -b.Y);
   }
 
   Vector2 operator*(float v)
@@ -77,7 +80,8 @@ public:
     return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
   }
 
-  static Vector2 AngleToVector(float angle){
-  return Vector2(cos(angle), sin(angle));
+  static Vector2 AngleToVector(float angle)
+  {
+    return Vector2(cos(angle), sin(angle));
   }
 };

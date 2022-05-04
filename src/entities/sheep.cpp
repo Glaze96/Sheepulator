@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <cmath>
+#include "../settings.h"
 
 Sheep::Sheep(float startX,
              float startY,
@@ -34,17 +35,17 @@ void Sheep::init()
  * 
  */
 
-void Sheep::update(uint32_t countedFrames, std::vector<std::vector<Movable *>> * ptr_sheepGrid, int h, int w)
+void Sheep::update(uint32_t countedFrames)
 {
 
   
-  int x = std::clamp((int)this->getPosition().X, 0, (int)w - 1);  //Get current coordinates
-  int y = std::clamp((int)this->getPosition().Y, 0, (int)h - 1);
+  int x = std::clamp((int)this->getPosition().X, 0, (int)Settings::SCREEN_WIDTH - 1);  //Get current coordinates
+  int y = std::clamp((int)this->getPosition().Y, 0, (int)Settings::SCREEN_HEIGHT - 1);
   
   
   //std::cout << " pre nullified: " << (*ptr_sheepGrid)[y][x] << std::endl;
   
-  (*ptr_sheepGrid)[y][x] = nullptr; //Clear current pos
+  (*m_sheepGrid)[y][x] = nullptr; //Clear current pos
   
   //std::cout << "post nullified: " << (*ptr_sheepGrid)[y][x] << std::endl;
 
@@ -54,10 +55,10 @@ void Sheep::update(uint32_t countedFrames, std::vector<std::vector<Movable *>> *
   moveRandom(0.05);
 
   
-  x = std::clamp((int)this->getPosition().X, 0, (int)w - 1);  //Get updated coordinates
-  y = std::clamp((int)this->getPosition().Y, 0, (int)h - 1);
+  x = std::clamp((int)this->getPosition().X, 0, (int)Settings::SCREEN_WIDTH - 1);  //Get updated coordinates
+  y = std::clamp((int)this->getPosition().Y, 0, (int)Settings::SCREEN_HEIGHT - 1);
   
-  (*ptr_sheepGrid)[y][x] = (Sheep *)this;  //Set new coordinates to point to this instance of sheep
+  (*m_sheepGrid)[y][x] = (Sheep *)this;  //Set new coordinates to point to this instance of sheep
   
 }
 // void Sheep::update(uint32_t countedFrames)

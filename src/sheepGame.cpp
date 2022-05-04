@@ -52,7 +52,7 @@ bool SheepGame::update(uint32_t countedFrames)
       {
         float randX = (rand() % (int)m_screenWidth - 1);
         float randY = (rand() % (int)m_screenHeight - 1);
-        Sheep *sheep = new Sheep(randX, randY, 0.5f, 20, &m_sheepList, &m_dogList, &m_sheepGrid);
+        Sheep *sheep = new Sheep(randX, randY, 1.5f, 20, &m_sheepList, &m_dogList, &m_sheepGrid);
         m_sheepList.push_back(sheep);
       }
 
@@ -67,7 +67,7 @@ bool SheepGame::update(uint32_t countedFrames)
     {
       float randX = (rand() % (int)m_screenWidth - 1);
       float randY = (rand() % (int)m_screenHeight - 1);
-      Dog *dog = new Dog(randX, randY, 2.0f, m_sheepList, m_dogList);
+      Dog *dog = new Dog(randX, randY, 0.8f, m_sheepList, m_dogList);
       m_dogList.push_back(dog);
     }
 

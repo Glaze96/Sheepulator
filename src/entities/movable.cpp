@@ -16,11 +16,10 @@ void Movable::setDirection(float angle) {
 
 void Movable::move(float x, float y)
 {
-  m_position.X += x;
-  m_position.Y += y;
+  addPosition(x, y);
 }
 
 void Movable::move(const Vector2 &distance)
 {
-  m_position += distance;
+  addPosition(distance.X, distance.Y);
 }

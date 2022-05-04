@@ -1,7 +1,6 @@
 #define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 #include <stdio.h>
-#include <cmath>
 #include <iostream>
 #include <vector>
 
@@ -9,12 +8,9 @@
 #include <time.h>
 
 #include "src/math/LTimer.h"
-#include "src/entities/sheep.h"
-#include "src/entities/dog.h"
 #include "src/sheepGame.h"
 
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
+#include "src/settings.h"
 
 const int SCREEN_FPS = 60;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
@@ -26,7 +22,7 @@ int main(int argc, char *args[])
 
   SDL_Renderer *renderer;
 
-  SheepGame game(&renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+  SheepGame game(&renderer, Settings::SCREEN_WIDTH ,Settings::SCREEN_HEIGHT);
 
   srand(time(NULL)); // random seed
 
@@ -38,7 +34,7 @@ int main(int argc, char *args[])
   }
 
   // Create window
-  SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, 0, &window, &renderer);
+  SDL_CreateWindowAndRenderer(Settings::SCREEN_WIDTH, Settings::SCREEN_HEIGHT, 0, &window, &renderer);
 
   LTimer fpsTimer;
   LTimer capTimer;

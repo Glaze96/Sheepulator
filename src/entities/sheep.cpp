@@ -16,8 +16,7 @@ Sheep::Sheep(float startX,
              std::vector<Movable *> *dogList,
              std::vector<std::vector<Movable *>> *sheepGrid) : Movable(), m_viewRange(viewRange), m_sheepList(sheepList), m_dogList(dogList), m_sheepGrid(sheepGrid)
 {
-  m_position.X = startX;
-  m_position.Y = startY;
+  setPosition(startX, startY);
   m_speed = speed;
 }
 
@@ -62,7 +61,7 @@ Movable *Sheep::findNearest(const std::vector<Movable *> *list)
 
   for (int i = 0; i < numMovables; i++)
   {
-    float newDistance = Vector2::DistanceSquared(list->at(i)->getPosition(), m_position);
+    float newDistance = Vector2::DistanceSquared(list->at(i)->getPosition(), getPosition());
 
     if (newDistance < 2.0f)
       continue;
@@ -80,9 +79,9 @@ Movable *Sheep::findNearestNew(std::vector<std::vector<Movable *>> *gridList, st
 {
   std::vector<Movable *> near;
 
-  for (int x = m_position.X - m_viewRange; x < m_position.X + m_viewRange; x++)
+  for (int x = getPosition().X - m_viewRange; x < getPosition().X + m_viewRange; x++)
   {
-    for (int y = m_position.Y - m_viewRange; y < m_position.Y + m_viewRange; y++)
+    for (int y = getPosition().Y - m_viewRange; y < getPosition().Y + m_viewRange; y++)
     {
       int xPos = x;
       int yPos = y;

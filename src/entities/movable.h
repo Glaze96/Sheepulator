@@ -9,6 +9,9 @@ public:
   Movable();
 
 public:
+  float getAngle() { return m_directionAngle; }
+
+public:
   void move(float x, float y);
   void move(const Vector2 &distance);
 

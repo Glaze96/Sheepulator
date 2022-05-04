@@ -11,6 +11,8 @@ void SheepGame::init()
   std::cout << "1 to add 'x amount' SHEEP" << std::endl;
   std::cout << "2 to add one DOG" << std::endl;
   std::cout << "SPACE clear all" << std::endl;
+  std::cout << "RETURN for debug logs" << std::endl;
+
   for (int y = 0; y < m_screenHeight; y++)
   {
     std::vector<Movable *> row;
@@ -26,9 +28,6 @@ void SheepGame::init()
 
 bool SheepGame::update(uint32_t countedFrames)
 {
-  if (countedFrames % 60 == 0)
-    std::cout << "Num sheep: " << m_sheepList.size() << std::endl;
-
   InputManager *input = InputManager::getInstance();
 
   if (input->isKeyDown(SDL_SCANCODE_SPACE))
@@ -40,8 +39,6 @@ bool SheepGame::update(uint32_t countedFrames)
     for (auto dog : m_dogList)
       delete dog;
     m_dogList.clear();
-
-    // TODO: Clear sheep grid
   }
 
   // Spawn 'x' amount of sheep at random positions when pressing 2 key
@@ -50,9 +47,9 @@ bool SheepGame::update(uint32_t countedFrames)
     // GENERATE NEW SHEEPS
     for (int i = 0; i < m_numSheep; i++)
     {
-      float randX = (rand() % (int)m_screenWidth - 1);
-      float randY = (rand() % (int)m_screenHeight - 1);
-      Sheep *sheep = new Sheep(randX, randY, 1.5f, 20, &m_sheepList, &m_dogList, &m_sheepGrid);
+      float randX = (rand() % (int)m_screenWidth);
+      float randY = (rand() % (int)m_screenHeight);
+      Sheep *sheep = new Sheep(randX, randY, 0.5f, 20, &m_sheepList, &m_dogList, m_sheepGrid);
       m_sheepList.push_back(sheep);
     }
 
@@ -70,6 +67,19 @@ bool SheepGame::update(uint32_t countedFrames)
     float randY = (rand() % (int)m_screenHeight - 1);
     Dog *dog = new Dog(randX, randY, 0.8f, m_sheepList, m_dogList);
     m_dogList.push_back(dog);
+  }
+
+  if (input->isKeyDown(SDL_SCANCODE_RETURN)) {
+    int counter = 0;
+    for (int x = 0; x < m_sheepGrid.size() - 1; x++) {
+      for (int y = 0; y < m_sheepGrid[0].size() - 1; y++) {
+        if (m_sheepGrid[x][y] != nullptr) {
+          counter++;
+        }
+      }
+    }
+    std::cout << "Num sheep: " << m_sheepList.size() << std::endl;
+    std::cout << "Num sheep on grid: " << counter << std::endl;
   }
 
   // Quit if pressing ESCAPE key

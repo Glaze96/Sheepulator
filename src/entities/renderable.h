@@ -8,7 +8,7 @@ class Renderable
 public:
   void render(SDL_Renderer *renderer);
 
-  inline Vector2 getPosition() const { return m_position; };
+  inline Vector2 getPosition() { return m_position; };
   inline void setPosition(float x, float y)
   {
     x = std::clamp(x, 0.0f, (float)Settings::SCREEN_WIDTH - 1.0f);

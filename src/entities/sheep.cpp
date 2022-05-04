@@ -15,16 +15,16 @@ Sheep::Sheep(float startX,
              int viewRange,
              std::vector<Movable *> *sheepList,
              std::vector<Movable *> *dogList,
-             std::vector<std::vector<Movable *>> *sheepGrid) : Movable(), m_viewRange(viewRange), m_sheepList(sheepList), m_dogList(dogList), m_sheepGrid(sheepGrid)
+             std::vector<std::vector<Movable *>> &sheepGrid) : Movable(), m_viewRange(viewRange), m_sheepList(sheepList), m_dogList(dogList), m_sheepGrid(sheepGrid)
 {
   setPosition(startX, startY);
   m_speed = speed;
+  m_sheepGrid[startY][startX] = this;
 }
 
 void Sheep::init()
 {
 }
-
 
 /*
  *
@@ -32,37 +32,52 @@ void Sheep::init()
  * 1. Clear sheeps position in sheepGrid
  * 2. Move sheep
  * 3. Set new position in sheepGrid
- * 
+ *
  */
 
 void Sheep::update(uint32_t countedFrames)
 {
 
-  int y = (int)this->getPosition().Y;
-  int x = (int)this->getPosition().X;
-  (*m_sheepGrid)[y][x] = nullptr; //Clear current pos
+  int y = (int)getPosition().Y;
+  int x = (int)getPosition().X;
+  m_sheepGrid[y][x] = nullptr; // Clear current pos
 
-  // moveTarget(findNearestNew(m_sheepGrid, m_sheepList));
-  moveTarget(findNearest(m_dogList), true); // Move away from dogs
-  moveRandom(0.1f); // Move a bit random
+  // Movable *nearest = findNearestOnGrid(&m_sheepGrid, m_sheepList);
 
-  y = (int)this->getPosition().Y;
-  x = (int)this->getPosition().X;
+  // moveToTarget(nearest);
 
-  (*m_sheepGrid)[y][x] = (Sheep *)this;  //Set new coordinates to point to this instance of sheep
-  
+  std::vector<Movable *> neigbors = findNeighbors(m_sheepGrid);
+  Vector2 center = findNeighborCenter(neigbors);
+  float angle = findNeighborAngle(neigbors);
+  moveToPosition(center);
+  m_directionAngle = angle;
+
+  // Move away from dogs
+  // moveTarget(findNearest(m_dogList), true); // Move away from dogs
+
+  moveRandom(0.1f);
+
+  y = (int)getPosition().Y;
+  x = (int)getPosition().X;
+  m_sheepGrid[y][x] = this; // Clear current pos
 }
 
-void Sheep::moveTarget(Movable *target, bool away)
+void Sheep::moveToTarget(Movable *target, bool away)
 {
   if (target == nullptr)
     return;
 
-  Vector2 dif = (target->getPosition() - getPosition());
+  moveToPosition(target->getPosition(), away);
+}
+
+void Sheep::moveToPosition(Vector2 pos, bool away)
+{
+
+  Vector2 dif = (pos - getPosition());
 
   Vector2 direction = away ? -dif.normalized() : dif.normalized();
 
-  if (dif.magnitude() > 5.0f)
+  if (dif.magnitude() > 2.0f)
     move(direction * m_speed);
 }
 
@@ -91,7 +106,15 @@ Movable *Sheep::findNearest(const std::vector<Movable *> *list)
   return list->at(nearestIndex);
 }
 
-Movable *Sheep::findNearestNew(std::vector<std::vector<Movable *>> *gridList, std::vector<Movable *> *list)
+Movable *Sheep::findNearestOnGrid(std::vector<std::vector<Movable *>> *gridList, std::vector<Movable *> *list)
+{
+  // std::vector<Movable *> near = findNeighbors(gridList);
+  // Movable *nearest = findNearest(&near);
+  // return nearest;
+  return nullptr;
+}
+
+std::vector<Movable *> Sheep::findNeighbors(const std::vector<std::vector<Movable *>> &gridList)
 {
   std::vector<Movable *> near;
 
@@ -99,14 +122,47 @@ Movable *Sheep::findNearestNew(std::vector<std::vector<Movable *>> *gridList, st
   {
     for (int y = getPosition().Y - m_viewRange; y < getPosition().Y + m_viewRange; y++)
     {
-      int xPos = std::clamp((int)this->getPosition().X, 0, (int)Settings::SCREEN_WIDTH - 1);
-      int yPos = std::clamp((int)this->getPosition().Y, 0, (int)Settings::SCREEN_HEIGHT - 1);
+      int xPos = std::clamp(x, 0, (int)Settings::SCREEN_WIDTH - 1);
+      int yPos = std::clamp(y, 0, (int)Settings::SCREEN_HEIGHT - 1);
 
-      Movable *newMovable = gridList->at(yPos)[xPos];
+      Movable *newMovable = m_sheepGrid[yPos][xPos];
       if (newMovable != nullptr)
+      {
         near.push_back(newMovable);
+      }
     }
   }
-  Movable *nearest = findNearest(&near);
-  return nearest;
+
+  return near;
+}
+
+Vector2 Sheep::findNeighborCenter(const std::vector<Movable *> &neighbors)
+{
+
+  float totalX = 0;
+  float totalY = 0;
+  int count = neighbors.size();
+
+  for (auto &n : neighbors)
+  {
+    totalX += n->getPosition().X;
+    totalY += n->getPosition().Y;
+  }
+
+  return Vector2(totalX / count, totalY / count);
+}
+
+float Sheep::findNeighborAngle(const std::vector<Movable *> &neighbors)
+{
+  float averageAngle = 0;
+  int count = neighbors.size();
+
+  for (auto &n : neighbors)
+  {
+    averageAngle += n->getAngle();
+  }
+  if (count > 0)
+    return averageAngle / count;
+  else
+    return averageAngle;
 }

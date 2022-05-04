@@ -11,7 +11,7 @@
 class SheepGame : public Game
 {
 public:
-  SheepGame(SDL_Renderer *renderer, uint32_t screenWidth, uint32_t screenHeight);
+  SheepGame(SDL_Renderer **renderer, uint32_t screenWidth, uint32_t screenHeight);
 
 public:
   void init() override;

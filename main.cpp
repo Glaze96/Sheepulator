@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "src/LTimer.h"
+#include "src/math/LTimer.h"
 #include "src/entities/sheep.h"
 #include "src/entities/dog.h"
 #include "src/sheepGame.h"
@@ -26,7 +26,7 @@ int main(int argc, char *args[])
 
   SDL_Renderer *renderer;
 
-  SheepGame game(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+  SheepGame game(&renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
   srand(time(NULL)); // random seed
 
@@ -54,12 +54,12 @@ int main(int argc, char *args[])
   {
     capTimer.start();
 
-    running = game.update(countedFrames);
-
     float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
     if (countedFrames % 60 == 0)
       std::cout << "Average FPS: " << avgFPS << "\n";
 
+    running = game.update(countedFrames);
+    
     // Clear window to black
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
@@ -81,9 +81,7 @@ int main(int argc, char *args[])
 
   // Destroy window
   SDL_DestroyWindow(window);
-
   // Quit SDL subsystems
   SDL_Quit();
-  printf("IT ACTUALLY WORKS! TRUST ME!");
   return 0;
 }

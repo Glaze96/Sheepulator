@@ -6,7 +6,7 @@
 class Game
 {
 public:
-  Game(SDL_Renderer *renderer, uint32_t screenWidth, uint32_t screenHeight);
+  Game(SDL_Renderer **renderer, uint32_t screenWidth, uint32_t screenHeight);
   virtual ~Game();
 
 public:
@@ -20,7 +20,7 @@ public:
 
 protected:
   SDL_Event m_event;
-  SDL_Renderer *m_renderer;
+  SDL_Renderer **m_renderer;
   uint32_t m_screenWidth;
   uint32_t m_screenHeight;
   bool m_running;

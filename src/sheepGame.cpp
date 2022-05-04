@@ -1,6 +1,7 @@
 #include "sheepGame.h"
+#include <iostream>
 
-SheepGame::SheepGame(SDL_Renderer *renderer, uint32_t screenWidth, uint32_t screenHeight) : Game(renderer, screenWidth, screenHeight){};
+SheepGame::SheepGame(SDL_Renderer **renderer, uint32_t screenWidth, uint32_t screenHeight) : Game(renderer, screenWidth, screenHeight){};
 
 void SheepGame::init()
 {
@@ -23,7 +24,7 @@ bool SheepGame::update(uint32_t countedFrames)
       dogList.clear();
       
       // GENERATE NEW SHEEPS
-      int newSheepAmmout = 10000;
+      int newSheepAmmout = 100;
       for (int i = 0; i < newSheepAmmout; i++)
       {
         float randX = (rand() % (int)m_screenWidth - 1);
@@ -62,6 +63,8 @@ bool SheepGame::update(uint32_t countedFrames)
 
   for (int i = 0; i < sheepList.size(); i++)
   {
+
+    std::cout << "updating sheep" << std::endl;
     Sheep *sheep = (Sheep *)sheepList.at(i);
     sheep->update(countedFrames);
   }
@@ -78,19 +81,20 @@ bool SheepGame::update(uint32_t countedFrames)
 void SheepGame::render()
 {
   // Sets sheep color
-  SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
+  SDL_SetRenderDrawColor(*m_renderer, 255, 255, 255, 255);
 
   // Main loop for sheep updates
   for (int i = 0; i < sheepList.size(); i++)
   {
+    // std::cout << "rendering sheep" << std::endl;
     Sheep *sheep = (Sheep *)sheepList.at(i);
-    sheep->render(m_renderer);
+    sheep->render(*m_renderer);
   }
 
-  SDL_SetRenderDrawColor(m_renderer, 255, 0, 0, 255);
+  SDL_SetRenderDrawColor(*m_renderer, 255, 0, 0, 255);
   for (int i = 0; i < dogList.size(); i++)
   {
     Dog *dog = (Dog *)dogList.at(i);
-    dog->render(m_renderer);
+    dog->render(*m_renderer);
   }
 };

@@ -13,6 +13,7 @@
 				"${workspaceFolder}\\bin\\sheepulator.exe",
 				"./src/*.cpp",
 				"./src/entities/*.cpp",
+				"./src/math/*.cpp",
 				"-I./include",
 				"-L./lib",
 				"-lSDL2",

@@ -76,4 +76,8 @@ public:
   {
     return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
   }
+
+  static Vector2 AngleToVector(float angle){
+  return Vector2(cos(angle), sin(angle));
+  }
 };

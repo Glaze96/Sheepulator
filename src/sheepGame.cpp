@@ -44,6 +44,7 @@ bool SheepGame::update(uint32_t countedFrames)
     // TODO: Clear sheep grid
   }
 
+  // Spawn 'x' amount of sheep at random positions when pressing 2 key
   if (input->isKeyDown(SDL_SCANCODE_1))
   {
     // GENERATE NEW SHEEPS
@@ -62,6 +63,7 @@ bool SheepGame::update(uint32_t countedFrames)
     }
   }
 
+  // Spawn dog at random position when pressing 2 key
   if (input->isKeyDown(SDL_SCANCODE_2))
   {
     float randX = (rand() % (int)m_screenWidth - 1);
@@ -70,24 +72,35 @@ bool SheepGame::update(uint32_t countedFrames)
     m_dogList.push_back(dog);
   }
 
+  // Quit if pressing ESCAPE key
   if (input->isKeyDown(SDL_SCANCODE_ESCAPE)) {
     return false;
   }
   
+  // if we press the X button
   if (input->quitRequested()) {
     return false;
   }
 
+  // Spawn dog at mouse pos
+  if (input->isMouseDown(MouseButton::MOUSE_LEFT)) {
+    int mouseX = input->getMouseX();
+    int mouseY = input->getMouseY();
+    Dog *dog = new Dog(mouseX, mouseY, 0.8f, m_sheepList, m_dogList);
+    m_dogList.push_back(dog);
+  }
 
   updateSheep(countedFrames);
 
+  // Update dogs
   for (int i = 0; i < m_dogList.size(); i++)
   {
     Dog *dog = (Dog *)m_dogList.at(i);
     dog->update(countedFrames);
   }
 
-  return true; // Keep looping
+  // Keep looping
+  return true; 
 };
 
 // RENDER FUNC

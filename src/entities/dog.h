@@ -11,9 +11,6 @@ public:
 
 public:
   void update(uint32_t countedFrames); // Main logic loop
-
-  void moveRandom(float magnitude);
-
 private:
   std::vector<Movable *> &m_sheepList;
   std::vector<Movable *> &m_dogList;

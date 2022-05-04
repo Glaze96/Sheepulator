@@ -23,8 +23,6 @@ public:
 private:
   void moveTarget(Movable *target, bool away = false);
 
-  void moveRandom(float magnitude);
-
   Movable *findNearest(const std::vector<Movable *> *list);
   Movable *findNearestNew(std::vector<std::vector<Movable *>> *gridList, std::vector<Movable *> *list);
 

@@ -11,8 +11,8 @@ public:
   inline Vector2 getPosition() const { return m_position; };
   inline void setPosition(float x, float y)
   {
-    x = std::clamp((int)x, 0, (int)Settings::SCREEN_WIDTH - 1);
-    y = std::clamp((int)y, 0, (int)Settings::SCREEN_HEIGHT - 1);
+    x = std::clamp(x, 0.0f, (float)Settings::SCREEN_WIDTH - 1.0f);
+    y = std::clamp(y, 0.0f, (float)Settings::SCREEN_HEIGHT - 1.0f);
 
     m_position.X = x;
     m_position.Y = y;

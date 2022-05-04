@@ -3,15 +3,12 @@
 #include <cmath>
 
 Movable::Movable() {
-  m_directionAngle = ((rand() % 1000) - 500) / 500.f * M_PI_2;
+  float r = (rand() % 1000) / 1000.0f;
+  m_directionAngle = r * M_PI * 2.0f;
 }
 
 void Movable::moveDirection() {
-  move(Vector2::AngleToVector(m_directionAngle) * m_speed);
-}
-
-void Movable::setDirection(float angle) {
-  m_directionAngle = angle;
+  move(cos(m_directionAngle) * m_speed, sin(m_directionAngle) * m_speed);
 }
 
 void Movable::move(float x, float y)
@@ -22,4 +19,15 @@ void Movable::move(float x, float y)
 void Movable::move(const Vector2 &distance)
 {
   addPosition(distance.X, distance.Y);
+}
+
+void Movable::moveRandom(float magnitude)
+{
+  // std::cout << "before: " << m_directionAngle << std::endl;
+  float r = (rand() % 1000) / 1000.0f - 0.5f;
+  // // std::cout << "before: " << r << std::endl;
+
+  m_directionAngle += r * magnitude;
+  // std::cout << "after: " << m_directionAngle << std::endl;
+  moveDirection();
 }

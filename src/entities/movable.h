@@ -13,7 +13,7 @@ public:
   void move(const Vector2 &distance);
 
   void moveDirection();
-  void setDirection(float angle);
+  void moveRandom(float magnitude);
 
 protected:
   float m_speed; // Base speed

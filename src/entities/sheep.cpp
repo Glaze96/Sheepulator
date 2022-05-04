@@ -44,7 +44,7 @@ void Sheep::update(uint32_t countedFrames)
 
   // moveTarget(findNearestNew(m_sheepGrid, m_sheepList));
   moveTarget(findNearest(m_dogList), true); // Move away from dogs
-  moveRandom(0.05); // Move a bit random
+  moveRandom(0.1f); // Move a bit random
 
   y = (int)this->getPosition().Y;
   x = (int)this->getPosition().X;
@@ -64,12 +64,6 @@ void Sheep::moveTarget(Movable *target, bool away)
 
   if (dif.magnitude() > 5.0f)
     move(direction * m_speed);
-}
-
-void Sheep::moveRandom(float magnitude)
-{
-  m_directionAngle += ((rand() % 1000 - 499) / 500.f) * M_PI * magnitude;
-  moveDirection();
 }
 
 Movable *Sheep::findNearest(const std::vector<Movable *> *list)

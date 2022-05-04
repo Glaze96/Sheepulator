@@ -3,7 +3,7 @@
 #include <cmath>
 
 Movable::Movable(float speed) : m_speed(speed) {
-  m_directionAngle = ((rand() % 1000) - 500) / 1000.f * M_PI * 2.0f;
+  m_directionAngle = ((rand() % 1000) - 500) / 1000.f * M_PI_2;
 }
 
 void Movable::moveDirection() {

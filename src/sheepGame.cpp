@@ -121,18 +121,39 @@ void SheepGame::render()
   }
 };
 
+
+/*
+ *
+ * Sheep update:
+ * 
+ * for each sheep do:
+ * sheep->update(cF, &m_sheepGrid);
+ * 
+ */
+
 void SheepGame::updateSheep(uint32_t countedFrames)
 {
   for (int i = 0; i < m_sheepList.size(); i++)
   {
     Sheep *sheep = (Sheep *)m_sheepList.at(i);
 
-    int xPos = std::clamp((int)sheep->getPosition().X, 0, (int)m_screenWidth - 1);
-    int yPos = std::clamp((int)sheep->getPosition().Y, 0, (int)m_screenHeight - 1);
-
-    // Update grid positions for sheep
-    m_sheepGrid[yPos][xPos] = sheep;
-
-    sheep->update(countedFrames);
+    sheep->update(countedFrames, &m_sheepGrid, m_screenHeight, m_screenWidth); //update sheep will also update sheep instances pos in grid.
   }
 }
+
+
+// void SheepGame::updateSheep(uint32_t countedFrames)
+// {
+//   for (int i = 0; i < m_sheepList.size(); i++)
+//   {
+//     Sheep *sheep = (Sheep *)m_sheepList.at(i);
+
+//     int xPos = std::clamp((int)sheep->getPosition().X, 0, (int)m_screenWidth - 1);
+//     int yPos = std::clamp((int)sheep->getPosition().Y, 0, (int)m_screenHeight - 1);
+
+//     // Update grid positions for sheep
+//     m_sheepGrid[yPos][xPos] = sheep;
+
+//     sheep->update(countedFrames);
+//   }
+// }

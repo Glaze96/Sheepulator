@@ -20,7 +20,7 @@ public:
 
 public:
   void update(uint32_t countedFrames); // Main logic loop
-
+  void update(uint32_t countedFrames, std::vector<std::vector<Movable *>> * ptr_sheepGrid, int h, int w); // Main logic loop
 private:
   void moveTarget(Movable *target, bool away = false);
 

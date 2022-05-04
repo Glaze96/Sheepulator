@@ -24,12 +24,48 @@ void Sheep::init()
 {
 }
 
-void Sheep::update(uint32_t countedFrames)
+
+/*What's the point of countedFrames???
+ *
+ * On sheep update:
+ * 1. Clear sheeps position in sheepGrid
+ * 2. Move sheep
+ * 3. Set new position in sheepGrid
+ * 
+ */
+
+void Sheep::update(uint32_t countedFrames, std::vector<std::vector<Movable *>> * ptr_sheepGrid, int h, int w)
 {
+
+  
+  int x = std::clamp((int)this->getPosition().X, 0, (int)w - 1);  //Get current coordinates
+  int y = std::clamp((int)this->getPosition().Y, 0, (int)h - 1);
+  
+  
+  //std::cout << " pre nullified: " << (*ptr_sheepGrid)[y][x] << std::endl;
+  
+  (*ptr_sheepGrid)[y][x] = nullptr; //Clear current pos
+  
+  //std::cout << "post nullified: " << (*ptr_sheepGrid)[y][x] << std::endl;
+
+
   // moveTarget(findNearestNew(m_sheepGrid, m_sheepList));
   moveTarget(findNearest(m_dogList), true);
   moveRandom(0.05);
+
+  
+  x = std::clamp((int)this->getPosition().X, 0, (int)w - 1);  //Get updated coordinates
+  y = std::clamp((int)this->getPosition().Y, 0, (int)h - 1);
+  
+  (*ptr_sheepGrid)[y][x] = (Sheep *)this;  //Set new coordinates to point to this instance of sheep
+  
 }
+// void Sheep::update(uint32_t countedFrames)
+// {
+//   // moveTarget(findNearestNew(m_sheepGrid, m_sheepList));
+//   moveTarget(findNearest(m_dogList), true);
+//   moveRandom(0.05);
+// }
 
 void Sheep::moveTarget(Movable *target, bool away)
 {

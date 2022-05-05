@@ -12,7 +12,7 @@ Dog::Dog(float startX,
   m_speed = speed;
 }
 
-void Dog::update(uint32_t countedFrames)
+void Dog::update(float deltaTime)
 {
   moveRandom(1.0f);
 }

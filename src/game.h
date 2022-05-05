@@ -11,7 +11,7 @@ public:
 
 public:
   virtual void init(){};
-  virtual bool update(float frameTime)
+  virtual bool update(float deltaTime)
   {
     std::cout << "Override update please!!" << std::endl;
     return false;

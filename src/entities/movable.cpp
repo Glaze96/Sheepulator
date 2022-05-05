@@ -6,6 +6,7 @@ Movable::Movable()
 {
   float val = (rand() % 1000) / 1000.0f;
   setAngle(val * M_PI * 2.0f);
+  setWantedAngle(val * M_PI * 2.0f);
 }
 
 void Movable::addAngle(float addAngle)

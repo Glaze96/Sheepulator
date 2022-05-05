@@ -15,11 +15,11 @@ public:
 
 public:
   void init() override;
-  bool update(float frameTime) override;
+  bool update(float deltaTime) override;
   void render() override;
 
 private:
-  void updateSheep(float frameTime);
+  void updateSheep(float deltaTime);
 
 private:
   std::vector<Movable *> m_sheepList; // Holds all the sheep (objects) in a vector

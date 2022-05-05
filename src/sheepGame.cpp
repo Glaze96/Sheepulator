@@ -26,7 +26,7 @@ void SheepGame::init()
   }
 }
 
-bool SheepGame::update(float frameTime)
+bool SheepGame::update(float deltaTime)
 {
   InputManager *input = InputManager::getInstance();
 
@@ -124,13 +124,13 @@ bool SheepGame::update(float frameTime)
     m_dogList.push_back(dog);
   }
 
-  updateSheep(frameTime);
+  updateSheep(deltaTime);
 
   // Update dogs
   for (int i = 0; i < m_dogList.size(); i++)
   {
     Dog *dog = (Dog *)m_dogList.at(i);
-    dog->update(frameTime);
+    dog->update(deltaTime);
   }
 
   // Keep looping
@@ -167,12 +167,12 @@ void SheepGame::render()
  *
  */
 
-void SheepGame::updateSheep(float frameTime)
+void SheepGame::updateSheep(float deltaTime)
 {
   for (int i = 0; i < m_sheepList.size(); i++)
   {
     Sheep *sheep = (Sheep *)m_sheepList.at(i);
 
-    sheep->update(frameTime); // update sheep will also update sheep instances pos in grid.
+    sheep->update(deltaTime); // update sheep will also update sheep instances pos in grid.
   }
 }

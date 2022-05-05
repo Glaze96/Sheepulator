@@ -17,10 +17,11 @@ public:
   void init();
 
 public:
-  void update(float frameTime); // Main logic loop
+  void update(float deltaTime); // Main logic loop
+
 private:
-  void moveTowardsTarget(Movable *target, float distanceCap = 1.0f, bool away = false);
-  void moveTowardsPosition(Vector2 pos, float distanceCap = 1.0f, bool away = false);
+  void moveTowardsTarget(Movable *target, float distanceCap = 2.0f, bool away = false);
+  void moveTowardsPosition(Vector2 pos, float distanceCap = 2.0f, bool away = false);
   void moveWithNeigbors(const std::vector<Movable *> &neighbors);
 
   void flock();
@@ -39,6 +40,9 @@ private:
   Movable *m_nearestDog;
   std::vector<Movable *> *m_neighbors;
   std::vector<std::vector<Movable *>> &m_sheepGrid;
+
+  bool m_inFlock;
   
   int m_viewRange;
+  Vector2 m_flockPositionOffset;
 };

@@ -36,11 +36,11 @@ public:
     return getAngleRad() * 180 / M_PI;
   }
 
-  void print()
+  void print(std::string message = "")
   {
-    std::cout << "VECTOR - X: " << X << ", Y: " << Y << std::endl;
+    std::cout << message << "(x: " << X << ", y: " << Y << ")" << std::endl;
   }
-  
+
   Vector2 operator-()
   {
     return Vector2(-this->X, -this->Y);
@@ -89,5 +89,11 @@ public:
   static Vector2 AngleToVector(float angle)
   {
     return Vector2(cos(angle), sin(angle));
+  }
+
+  static Vector2 RandomUnitVector()
+  {
+    float randomAngle = ((rand() % 1000) / 1000.0f) * M_PI * 2.0f;
+    return AngleToVector(randomAngle);
   }
 };

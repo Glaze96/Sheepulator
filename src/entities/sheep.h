@@ -17,7 +17,7 @@ public:
   void init();
 
 public:
-  void update(uint32_t countedFrames); // Main logic loop
+  void update(float frameTime); // Main logic loop
 private:
   void moveTowardsTarget(Movable *target, float distanceCap = 1.0f, bool away = false);
   void moveTowardsPosition(Vector2 pos, float distanceCap = 1.0f, bool away = false);

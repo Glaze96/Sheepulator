@@ -26,7 +26,7 @@ void SheepGame::init()
   }
 }
 
-bool SheepGame::update(uint32_t countedFrames)
+bool SheepGame::update(float frameTime)
 {
   InputManager *input = InputManager::getInstance();
 
@@ -124,13 +124,13 @@ bool SheepGame::update(uint32_t countedFrames)
     m_dogList.push_back(dog);
   }
 
-  updateSheep(countedFrames);
+  updateSheep(frameTime);
 
   // Update dogs
   for (int i = 0; i < m_dogList.size(); i++)
   {
     Dog *dog = (Dog *)m_dogList.at(i);
-    dog->update(countedFrames);
+    dog->update(frameTime);
   }
 
   // Keep looping
@@ -163,16 +163,16 @@ void SheepGame::render()
  * Sheep update:
  *
  * for each sheep do:
- * sheep->update(cF);
+ * sheep->update(frametime);
  *
  */
 
-void SheepGame::updateSheep(uint32_t countedFrames)
+void SheepGame::updateSheep(float frameTime)
 {
   for (int i = 0; i < m_sheepList.size(); i++)
   {
     Sheep *sheep = (Sheep *)m_sheepList.at(i);
 
-    sheep->update(countedFrames); // update sheep will also update sheep instances pos in grid.
+    sheep->update(frameTime); // update sheep will also update sheep instances pos in grid.
   }
 }

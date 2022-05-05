@@ -40,7 +40,7 @@ void Sheep::init()
  *
  */
 
-void Sheep::update(uint32_t countedFrames)
+void Sheep::update(float frameTime)
 {
 
   int y = (int)getPosition().Y;

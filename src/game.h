@@ -11,7 +11,7 @@ public:
 
 public:
   virtual void init(){};
-  virtual bool update(uint32_t countedFrames)
+  virtual bool update(float frameTime)
   {
     std::cout << "Override update please!!" << std::endl;
     return false;

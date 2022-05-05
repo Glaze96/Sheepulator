@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
+#include <chrono>
 
 #include <stdlib.h>
 #include <time.h>
@@ -40,23 +41,27 @@ int main(int argc, char *args[])
   LTimer fpsTimer;
   LTimer capTimer;
 
-  uint32_t countedFrames = 0;
   fpsTimer.start();
 
   bool running = true; // check if we want to quit
 
   game.init();
 
+  std::chrono::duration<double> elapsed;
+
+  float secondCounter = 0;
+  float lastFrameTime = 1.0f/ SCREEN_FPS;
+
   while (running) // main program loop
   {
-    InputManager::getInstance()->update();
+    auto start = std::chrono::high_resolution_clock::now();
     capTimer.start();
 
-    float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
-    if (countedFrames % 60 == 0)
-      std::cout << "Average FPS: " << avgFPS << "\n";
 
-    running = game.update(countedFrames);
+    InputManager::getInstance()->update();
+
+    running = game.update(lastFrameTime);
+    
     // Clear window to black
     SDL_SetRenderDrawColor(renderer, 5, 50, 10, 255);
     SDL_RenderClear(renderer);
@@ -66,14 +71,26 @@ int main(int argc, char *args[])
     // Show render
     SDL_RenderPresent(renderer);
 
-    ++countedFrames;
-
     int frameTicks = capTimer.getTicks();
     if (frameTicks < SCREEN_TICKS_PER_FRAME)
     {
       // Wait remaining time
       SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
     }
+
+    auto finish = std::chrono::high_resolution_clock::now();
+
+    elapsed = finish - start;
+    lastFrameTime = elapsed.count();
+    secondCounter += elapsed.count();
+
+    // Happens EVERY one second
+    if (secondCounter > 1.0f)
+    {
+      std::cout << "FPS: " << (int)(1.0f / elapsed.count()) << std::endl;
+      secondCounter = 0.0f;
+    }
+
   }
 
   // Destroy window

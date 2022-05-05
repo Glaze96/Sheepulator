@@ -10,25 +10,25 @@ public:
   Movable();
 
 public:
-  float getAngle() { return m_directionAngle; }
-  void setAngle(float newAngle) {
-    m_directionAngle = fmod(newAngle, M_PI * 2.0);
-  };
-
-  void addAngle(float angle);
+  float getAngle() { return m_currentAngle; }
+  void setWantedAngle(float newAngle);
 
 public:
   void move(float x, float y);
   void move(const Vector2 &distance);
 
-  void moveForward(); // Move forward using direction and speed
+  void moveForward(); // Move forward using current direction and speed
   void moveRandom(float magnitude);
 
-  void turnTowardsAngle(float targetAngle);
 
+private:
+  void addAngle(float angle);
+  void setAngle(float newAngle);
+  void turnTowardsWantedAngle();
 
 protected:
   float m_speed; // Base speed
-  float m_directionAngle; // Radians
+  float m_currentAngle; // Radians
+  float m_wantedAngle;
   float m_turnSpeed; // Turn speed in steps (radians) 1 = full snap
 };

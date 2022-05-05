@@ -21,8 +21,9 @@ public:
 public:
   void update(uint32_t countedFrames); // Main logic loop
 private:
-  void moveTowardsTarget(Movable *target, bool away = false);
-  void moveTowardsPosition(Vector2 pos, bool away = false);
+  void moveTowardsTarget(Movable *target, float distanceCap = 1.0f, bool away = false);
+  void moveTowardsPosition(Vector2 pos, float distanceCap = 1.0f, bool away = false);
+  void moveWithNeigbors(const std::vector<Movable *> &neighbors);
 
   void flock();
 

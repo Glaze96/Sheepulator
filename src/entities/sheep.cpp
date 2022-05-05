@@ -20,6 +20,9 @@ Sheep::Sheep(float startX,
   setPosition(startX, startY);
   m_speed = speed;
   m_sheepGrid[startY][startX] = this;
+  m_turnSpeed = 0.02f;
+  m_speed = 0.5f;
+  m_wantedAngle = M_PI;
 }
 
 void Sheep::init()
@@ -44,7 +47,7 @@ void Sheep::update(uint32_t countedFrames)
 
   flock();
 
-  // moveRandom(0.1f);
+  // moveRandom(1.0f);
 
   y = (int)getPosition().Y;
   x = (int)getPosition().X;
@@ -54,29 +57,41 @@ void Sheep::update(uint32_t countedFrames)
 void Sheep::flock()
 {
   std::vector<Movable *> neigbors = findNeighbors(m_sheepGrid);
-  Vector2 center = findNeighborCenter(neigbors);
-  float angle = findNeighborAngle(neigbors);
-  // moveTowardsPosition(center);
-  turnTowardsAngle(angle);
-  moveForward();
+  if (neigbors.size() > 3)
+  {
+    Vector2 center = findNeighborCenter(neigbors);
+    float angle = findNeighborAngle(neigbors);
+    moveTowardsPosition(center, 4.0f);
+    // moveWithNeigbors(neigbors);
+    moveForward();
+  }
+  else
+  {
+    moveForward();
+  }
 }
 
-void Sheep::moveTowardsTarget(Movable *target, bool away)
+void Sheep::moveTowardsTarget(Movable *target, float distanceCap, bool away)
 {
   if (target == nullptr)
     return;
 
-  moveTowardsPosition(target->getPosition(), away);
+  moveTowardsPosition(target->getPosition(), distanceCap, away);
 }
 
-void Sheep::moveTowardsPosition(Vector2 pos, bool away)
+void Sheep::moveTowardsPosition(Vector2 pos, float distanceCap, bool away)
 {
   Vector2 dif = (pos - getPosition());
 
   Vector2 direction = away ? -dif.normalized() : dif.normalized();
 
-  if (dif.magnitude() > 2.0f)
+  if (dif.magnitude() > distanceCap)
     move(direction * m_speed);
+}
+
+void Sheep::moveWithNeigbors(const std::vector<Movable *> &neighbors)
+{
+
 }
 
 Movable *Sheep::findNearest(const std::vector<Movable *> *list)
@@ -152,15 +167,26 @@ Vector2 Sheep::findNeighborCenter(const std::vector<Movable *> &neighbors)
 
 float Sheep::findNeighborAngle(const std::vector<Movable *> &neighbors)
 {
+  if (neighbors.size() == 0)
+    return 0;
+  
   float averageAngle = 0;
   int count = neighbors.size();
 
+  std::vector<Vector2> angleVectors;
+
+  float totalX = 0;
+  float totalY = 0;
+
   for (auto &n : neighbors)
   {
-    averageAngle += n->getAngle();
+    Vector2 vectorFromAngle = Vector2::AngleToVector(n->getAngle());
+    angleVectors.push_back(vectorFromAngle);
+    totalX += vectorFromAngle.X;
+    totalY += vectorFromAngle.Y;
   }
-  if (count > 0)
-    return averageAngle / count;
-  else
-    return averageAngle;
+
+  Vector2 finalVector(totalX / count, totalY / count);
+
+  return finalVector.getAngleRad();
 }

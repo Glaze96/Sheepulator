@@ -5,18 +5,32 @@
 Movable::Movable()
 {
   float r = (rand() % 1000) / 1000.0f;
-  m_directionAngle = r * M_PI * 2.0f;
-  m_turnSpeed = 0.02f;
+  setAngle(r * M_PI * 2.0f);
 }
 
-void Movable::addAngle(float angle)  {
-    float wantedAngle = m_directionAngle + angle;
-    m_directionAngle = fmod(wantedAngle, M_PI * 2.0);
+void Movable::addAngle(float addAngle)
+{
+  setAngle(m_currentAngle + addAngle);
+}
+
+void Movable::setWantedAngle(float newAngle)
+{
+  m_wantedAngle = newAngle;
+}
+
+void Movable::setAngle(float newAngle)
+{
+  m_currentAngle = fmod(newAngle, M_PI * 2);
+  if (m_currentAngle < 0)
+  {
+    m_currentAngle += M_PI * 2.0f;
   }
+}
 
 void Movable::moveForward()
 {
-  move(cos(m_directionAngle) * m_speed, sin(m_directionAngle) * m_speed);
+  turnTowardsWantedAngle();
+  move(Vector2::AngleToVector(m_currentAngle) * m_speed);
 }
 
 void Movable::move(float x, float y)
@@ -26,31 +40,26 @@ void Movable::move(float x, float y)
 
 void Movable::move(const Vector2 &distance)
 {
-  addPosition(distance.X, distance.Y);
+  move(distance.X, distance.Y);
 }
 
 void Movable::moveRandom(float magnitude)
 {
   float r = (rand() % 1000) / 1000.0f - 0.5f;
-
-  m_directionAngle += r * m_turnSpeed;
+  addAngle(r * magnitude);
   moveForward();
 }
 
-void Movable::turnTowardsAngle(float targetAngle)
+void Movable::turnTowardsWantedAngle()
 {
+  float dif = 0;
+  
+  if (abs(m_wantedAngle - m_currentAngle) < M_PI)
+    dif = m_wantedAngle - m_currentAngle;
+  else if (m_wantedAngle > m_currentAngle)
+    dif = m_wantedAngle - m_currentAngle - M_PI * 2.0f;
+  else
+    dif = m_wantedAngle - m_currentAngle + M_PI * 2.0f;
 
-  float angleDif = m_directionAngle - targetAngle;
-
-  if (angleDif > M_PI)
-  {
-    angleDif -= M_PI * 2.0f;
-  }
-  if (angleDif < -M_PI)
-  {
-    angleDif += M_PI * 2.0f;
-  }
-
-  addAngle(angleDif * m_turnSpeed);
+  addAngle(dif * m_turnSpeed);
 }
-

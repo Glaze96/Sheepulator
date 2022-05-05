@@ -2,12 +2,20 @@
 #include "movable.h"
 #include <cmath>
 
-Movable::Movable() {
+Movable::Movable()
+{
   float r = (rand() % 1000) / 1000.0f;
   m_directionAngle = r * M_PI * 2.0f;
+  m_turnSpeed = 0.02f;
 }
 
-void Movable::moveDirection() {
+void Movable::addAngle(float angle)  {
+    float wantedAngle = m_directionAngle + angle;
+    m_directionAngle = fmod(wantedAngle, M_PI * 2.0);
+  }
+
+void Movable::moveForward()
+{
   move(cos(m_directionAngle) * m_speed, sin(m_directionAngle) * m_speed);
 }
 
@@ -23,11 +31,26 @@ void Movable::move(const Vector2 &distance)
 
 void Movable::moveRandom(float magnitude)
 {
-  // std::cout << "before: " << m_directionAngle << std::endl;
   float r = (rand() % 1000) / 1000.0f - 0.5f;
-  // // std::cout << "before: " << r << std::endl;
 
-  m_directionAngle += r * magnitude;
-  // std::cout << "after: " << m_directionAngle << std::endl;
-  moveDirection();
+  m_directionAngle += r * m_turnSpeed;
+  moveForward();
 }
+
+void Movable::turnTowardsAngle(float targetAngle)
+{
+
+  float angleDif = m_directionAngle - targetAngle;
+
+  if (angleDif > M_PI)
+  {
+    angleDif -= M_PI * 2.0f;
+  }
+  if (angleDif < -M_PI)
+  {
+    angleDif += M_PI * 2.0f;
+  }
+
+  addAngle(angleDif * m_turnSpeed);
+}
+

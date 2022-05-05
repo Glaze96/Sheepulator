@@ -10,6 +10,7 @@ void SheepGame::init()
 {
   std::cout << "1 to add 'x amount' SHEEP" << std::endl;
   std::cout << "2 to add one DOG" << std::endl;
+  std::cout << "0 to add one SHEEP" << std::endl;
   std::cout << "SPACE clear all" << std::endl;
   std::cout << "RETURN for debug logs" << std::endl;
 
@@ -69,11 +70,15 @@ bool SheepGame::update(uint32_t countedFrames)
     m_dogList.push_back(dog);
   }
 
-  if (input->isKeyDown(SDL_SCANCODE_RETURN)) {
+  if (input->isKeyDown(SDL_SCANCODE_RETURN))
+  {
     int counter = 0;
-    for (int x = 0; x < m_sheepGrid.size() - 1; x++) {
-      for (int y = 0; y < m_sheepGrid[0].size() - 1; y++) {
-        if (m_sheepGrid[x][y] != nullptr) {
+    for (int x = 0; x < m_sheepGrid.size() - 1; x++)
+    {
+      for (int y = 0; y < m_sheepGrid[0].size() - 1; y++)
+      {
+        if (m_sheepGrid[x][y] != nullptr)
+        {
           counter++;
         }
       }
@@ -82,18 +87,32 @@ bool SheepGame::update(uint32_t countedFrames)
     std::cout << "Num sheep on grid: " << counter << std::endl;
   }
 
+  // Spawn one sheep center
+  if (input->isKeyDown(SDL_SCANCODE_0))
+  {
+    float randX = Settings::SCREEN_WIDTH / 2;
+    float randY = Settings::SCREEN_HEIGHT / 2;
+    Sheep *sheep = new Sheep(randX, randY, 0.5f, 20, &m_sheepList, &m_dogList, m_sheepGrid);
+    m_sheepList.push_back(sheep);
+    sheep->init();
+
+  }
+
   // Quit if pressing ESCAPE key
-  if (input->isKeyDown(SDL_SCANCODE_ESCAPE)) {
+  if (input->isKeyDown(SDL_SCANCODE_ESCAPE))
+  {
     return false;
   }
-  
+
   // if we press the X button
-  if (input->quitRequested()) {
+  if (input->quitRequested())
+  {
     return false;
   }
 
   // Spawn dog at mouse pos
-  if (input->isMouseDown(MouseButton::MOUSE_LEFT)) {
+  if (input->isMouseDown(MouseButton::MOUSE_LEFT))
+  {
     int mouseX = input->getMouseX();
     int mouseY = input->getMouseY();
     Dog *dog = new Dog(mouseX, mouseY, 0.8f, m_sheepList, m_dogList);
@@ -110,7 +129,7 @@ bool SheepGame::update(uint32_t countedFrames)
   }
 
   // Keep looping
-  return true; 
+  return true;
 };
 
 // RENDER FUNC

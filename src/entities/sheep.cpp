@@ -42,37 +42,35 @@ void Sheep::update(uint32_t countedFrames)
   int x = (int)getPosition().X;
   m_sheepGrid[y][x] = nullptr; // Clear current pos
 
-  // Movable *nearest = findNearestOnGrid(&m_sheepGrid, m_sheepList);
+  flock();
 
-  // moveToTarget(nearest);
-
-  std::vector<Movable *> neigbors = findNeighbors(m_sheepGrid);
-  Vector2 center = findNeighborCenter(neigbors);
-  float angle = findNeighborAngle(neigbors);
-  moveToPosition(center);
-  m_directionAngle = angle;
-
-  // Move away from dogs
-  // moveTarget(findNearest(m_dogList), true); // Move away from dogs
-
-  moveRandom(0.1f);
+  // moveRandom(0.1f);
 
   y = (int)getPosition().Y;
   x = (int)getPosition().X;
   m_sheepGrid[y][x] = this; // Clear current pos
 }
 
-void Sheep::moveToTarget(Movable *target, bool away)
+void Sheep::flock()
+{
+  std::vector<Movable *> neigbors = findNeighbors(m_sheepGrid);
+  Vector2 center = findNeighborCenter(neigbors);
+  float angle = findNeighborAngle(neigbors);
+  // moveTowardsPosition(center);
+  turnTowardsAngle(angle);
+  moveForward();
+}
+
+void Sheep::moveTowardsTarget(Movable *target, bool away)
 {
   if (target == nullptr)
     return;
 
-  moveToPosition(target->getPosition(), away);
+  moveTowardsPosition(target->getPosition(), away);
 }
 
-void Sheep::moveToPosition(Vector2 pos, bool away)
+void Sheep::moveTowardsPosition(Vector2 pos, bool away)
 {
-
   Vector2 dif = (pos - getPosition());
 
   Vector2 direction = away ? -dif.normalized() : dif.normalized();

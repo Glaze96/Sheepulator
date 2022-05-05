@@ -21,8 +21,10 @@ public:
 public:
   void update(uint32_t countedFrames); // Main logic loop
 private:
-  void moveToTarget(Movable *target, bool away = false);
-  void moveToPosition(Vector2 pos, bool away = false);
+  void moveTowardsTarget(Movable *target, bool away = false);
+  void moveTowardsPosition(Vector2 pos, bool away = false);
+
+  void flock();
 
   Movable *findNearest(const std::vector<Movable *> *list);
   Movable *findNearestOnGrid(std::vector<std::vector<Movable *>> *gridList, std::vector<Movable *> *list);

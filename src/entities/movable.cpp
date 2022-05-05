@@ -15,7 +15,11 @@ void Movable::addAngle(float addAngle)
 
 void Movable::setWantedAngle(float newAngle)
 {
-  m_wantedAngle = newAngle;
+  m_wantedAngle = fmod(newAngle, M_PI * 2);
+  if (m_currentAngle < 0)
+  {
+    m_wantedAngle += M_PI * 2.0f;
+  }
 }
 
 void Movable::setAngle(float newAngle)
@@ -45,15 +49,15 @@ void Movable::move(const Vector2 &distance)
 
 void Movable::moveRandom(float magnitude)
 {
-  float r = (rand() % 1000) / 1000.0f - 0.5f;
-  addAngle(r * magnitude);
+  float r = ((rand() % 1000) / 1000.0f) * M_PI * 2.0f;
+  setWantedAngle(r);
   moveForward();
 }
 
 void Movable::turnTowardsWantedAngle()
 {
   float dif = 0;
-  
+
   if (abs(m_wantedAngle - m_currentAngle) < M_PI)
     dif = m_wantedAngle - m_currentAngle;
   else if (m_wantedAngle > m_currentAngle)

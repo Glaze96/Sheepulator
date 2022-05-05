@@ -20,9 +20,8 @@ Sheep::Sheep(float startX,
   setPosition(startX, startY);
   m_speed = speed;
   m_sheepGrid[startY][startX] = this;
-  m_turnSpeed = 0.02f;
+  m_turnSpeed = 0.15f;
   m_speed = 0.5f;
-  m_wantedAngle = M_PI;
 }
 
 void Sheep::init()
@@ -47,8 +46,6 @@ void Sheep::update(uint32_t countedFrames)
 
   flock();
 
-  // moveRandom(1.0f);
-
   y = (int)getPosition().Y;
   x = (int)getPosition().X;
   m_sheepGrid[y][x] = this; // Clear current pos
@@ -56,18 +53,21 @@ void Sheep::update(uint32_t countedFrames)
 
 void Sheep::flock()
 {
-  std::vector<Movable *> neigbors = findNeighbors(m_sheepGrid);
-  if (neigbors.size() > 3)
+  std::vector<Movable *> nearestNeighbors = findNeighbors(m_sheepGrid);
+
+  if (nearestNeighbors.size() > 3)
   {
-    Vector2 center = findNeighborCenter(neigbors);
-    float angle = findNeighborAngle(neigbors);
-    moveTowardsPosition(center, 4.0f);
-    // moveWithNeigbors(neigbors);
+    Vector2 centerOfFlock = findNeighborCenter(nearestNeighbors);
+    moveTowardsPosition(centerOfFlock, 4.0f);
+
+    float flockAvergeAngle = findNeighborAngle(nearestNeighbors);
+    setWantedAngle(flockAvergeAngle);
+
     moveForward();
   }
   else
   {
-    moveForward();
+    moveRandom(0.5f);
   }
 }
 

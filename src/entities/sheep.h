@@ -20,8 +20,7 @@ public:
   void update(float deltaTime); // Main logic loop
 
 private:
-  void moveTowardsTarget(Movable *target, float distanceCap = 2.0f, bool away = false);
-  void moveTowardsPosition(Vector2 pos, float distanceCap = 2.0f, bool away = false);
+  void moveTowardsPosition(Vector2 pos, float multiplier = 1.0f, float distanceCap = 2.0f);
   void moveWithNeigbors(const std::vector<Movable *> &neighbors);
 
   void flock();

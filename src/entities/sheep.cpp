@@ -23,7 +23,7 @@ Sheep::Sheep(float startX,
 
   m_turnSpeed = 0.3f;
   // m_speed = (((rand() % 1000) / 1000) * 0.6f) + 0.15f; // give a random speed
-  m_speed = 1.0f; 
+  m_speed = 10.0f;
   m_viewRange = 40;
 }
 
@@ -56,60 +56,53 @@ void Sheep::update(float deltaTime)
 void Sheep::flock()
 {
   std::vector<Movable *> nearestNeighbors = findNeighbors(m_sheepGrid);
-
   int numNeigbors = nearestNeighbors.size();
 
-  if (numNeigbors >= 5 && !m_inFlock)
+  // CHECK FOR FLOCK
+  if (numNeigbors >= 10 && !m_inFlock)
   {
     m_inFlock = true;
 
-    float randomDistFromCenter = ((rand() % 100) / 100.0f + 1.0f) * numNeigbors / 3.0f;
+    float randomDistFromCenter = ((rand() % 100) / 100.0f + 1.0f) * numNeigbors / 6.0f;
     m_flockPositionOffset = Vector2::RandomUnitVector() * randomDistFromCenter;
-
-
-    float flockAvergeAngle = findNeighborAngle(nearestNeighbors);
-    // float randomAngleOffset = (((rand() % 1000) / 1000.0f) - 0.5f) * 0.02f;
-    // setWantedAngle(flockAvergeAngle);
-
-    // moveForward();
   }
-  else {
+
+  if (numNeigbors <= 4)
+  {
     m_inFlock = false;
   }
 
+  // FLOCK MOVEMENT
   if (m_inFlock)
   {
     Vector2 centerOfFlock = findNeighborCenter(nearestNeighbors);
-    moveTowardsPosition(centerOfFlock + m_flockPositionOffset);
+    moveTowardsPosition(centerOfFlock + m_flockPositionOffset, 0.8f);
+
+    float flockAvergeAngle = findNeighborAngle(nearestNeighbors);
+    float randomAngleOffset = (((rand() % 1000) / 1000.0f) - 0.5f) * 1.0f;
+    setCurrentAngle(flockAvergeAngle);
+    // setWantedAngle(0);
   }
-  else {
-    moveRandom(0.5f);
+  else
+  {
+    float r = ((rand() % 1000) / 1000.0f) * M_PI * 2.0f;
+    setWantedAngle(r);
   }
 
+  moveForward(1.0f);
 }
 
-void Sheep::moveTowardsTarget(Movable *target, float distanceCap, bool away)
-{
-  if (target == nullptr)
-    return;
-
-  moveTowardsPosition(target->getPosition(), distanceCap, away);
-}
-
-void Sheep::moveTowardsPosition(Vector2 pos, float distanceCap, bool away)
+void Sheep::moveTowardsPosition(Vector2 pos, float multiplier, float distanceCap)
 {
   Vector2 dif = (pos - getPosition());
 
-  Vector2 direction = away ? -dif.normalized() : dif.normalized();
   // Cannot check on grid here because it will find itself due to smaller than 1 steps
-  Vector2 newPosition = getPosition() + (direction * m_speed);
-  Sheep *sheepAtNewPos = (Sheep *)m_sheepGrid[(int)newPosition.Y][(int)newPosition.X];
+  // if (sheepAtNewPos == nullptr || sheepAtNewPos == this)
+  // {
+  // }
 
-  if (sheepAtNewPos == nullptr || sheepAtNewPos == this)
-  {
-  }
   if (dif.magnitude() > distanceCap)
-    move(direction * m_speed);
+    move(dif.normalized() * m_speed * multiplier);
 }
 
 void Sheep::moveWithNeigbors(const std::vector<Movable *> &neighbors)

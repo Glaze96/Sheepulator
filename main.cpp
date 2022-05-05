@@ -11,8 +11,9 @@
 #include "src/math/LTimer.h"
 #include "src/sheepGame.h"
 
-#include "src/settings.h"
+#include "src/globals.h"
 #include "src/input/inputManager.h"
+#include "src/settings.h"
 
 const int SCREEN_FPS = 60;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
@@ -82,6 +83,7 @@ int main(int argc, char *args[])
 
     elapsed = finish - start;
     lastFrameTime = elapsed.count();
+    Time::Instance()->DeltaTime = lastFrameTime;
     secondCounter += elapsed.count();
 
     // Happens EVERY one second

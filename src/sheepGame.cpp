@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "input/inputManager.h"
 #include <math.h>
+#include "settings.h"
 
 SheepGame::SheepGame(SDL_Renderer **renderer, uint32_t screenWidth, uint32_t screenHeight) : Game(renderer, screenWidth, screenHeight){};
 
@@ -14,6 +15,9 @@ void SheepGame::init()
   std::cout << "0 to add one SHEEP" << std::endl;
   std::cout << "SPACE clear all" << std::endl;
   std::cout << "RETURN for debug logs" << std::endl;
+  
+  std::cout << "LEFT MOUSE CLICK TO SPAWN SHEEP" << std::endl;
+  std::cout << "RIGHT MOUSE CLICK TO SPAWN DOG" << std::endl;
 
   for (int y = 0; y < m_screenHeight; y++)
   {
@@ -115,8 +119,18 @@ bool SheepGame::update(float deltaTime)
     return false;
   }
 
+  // Spawn sheep at point
+  if (input->isMousePressed(MouseButton::MOUSE_LEFT)) {
+    int mouseX = input->getMouseX();
+    int mouseY = input->getMouseY();
+    int randomX = (rand() % 10) - 5;
+    int randomY = (rand() % 10) - 5;
+    Sheep *sheep = new Sheep(mouseX + randomX, mouseY + randomY, &m_sheepList, &m_dogList, m_sheepGrid);
+    m_sheepList.push_back(sheep);
+  }
+
   // Spawn dog at mouse pos
-  if (input->isMouseDown(MouseButton::MOUSE_LEFT))
+  if (input->isMouseDown(MouseButton::MOUSE_RIGHT))
   {
     int mouseX = input->getMouseX();
     int mouseY = input->getMouseY();

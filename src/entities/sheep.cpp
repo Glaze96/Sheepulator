@@ -11,17 +11,20 @@
 
 Sheep::Sheep(float startX,
              float startY,
-             float speed,
-             int viewRange,
              std::vector<Movable *> *sheepList,
              std::vector<Movable *> *dogList,
-             std::vector<std::vector<Movable *>> &sheepGrid) : Movable(), m_viewRange(viewRange), m_sheepList(sheepList), m_dogList(dogList), m_sheepGrid(sheepGrid)
+             std::vector<std::vector<Movable *>> &sheepGrid) : 
+             Movable(),
+             m_sheepList(sheepList), 
+             m_dogList(dogList), 
+             m_sheepGrid(sheepGrid)
 {
   setPosition(startX, startY);
-  m_speed = speed;
   m_sheepGrid[startY][startX] = this;
+
   m_turnSpeed = 0.15f;
-  m_speed = 0.5f;
+  m_speed = (rand() % 100) / 200.0f + 0.1f;
+  m_viewRange = 20;
 }
 
 void Sheep::init()
@@ -48,7 +51,7 @@ void Sheep::update(uint32_t countedFrames)
 
   y = (int)getPosition().Y;
   x = (int)getPosition().X;
-  m_sheepGrid[y][x] = this; // Clear current pos
+  m_sheepGrid[y][x] = this; // Update grid
 }
 
 void Sheep::flock()

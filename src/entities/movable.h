@@ -30,5 +30,5 @@ protected:
   float m_speed; // Base speed
   float m_currentAngle; // Radians
   float m_wantedAngle;
-  float m_turnSpeed; // Turn speed in steps (radians) 1 = full snap
+  float m_turnSpeed; // Turn speed in steps (radians) 0-1 , 1 = full snap
 };

@@ -11,8 +11,6 @@ class Sheep : public Movable
 public:
   Sheep(float startX,
         float startY,
-        float speed,
-        int viewRange,
         std::vector<Movable *> *sheepList,
         std::vector<Movable *> *dogList,
         std::vector<std::vector<Movable *>> &sheepGrid);
@@ -41,6 +39,6 @@ private:
   Movable *m_nearestDog;
   std::vector<Movable *> *m_neighbors;
   std::vector<std::vector<Movable *>> &m_sheepGrid;
+  
   int m_viewRange;
-  Vector2 m_neighborCenter;
 };

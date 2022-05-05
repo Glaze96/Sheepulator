@@ -4,8 +4,8 @@
 
 Movable::Movable()
 {
-  float r = (rand() % 1000) / 1000.0f;
-  setAngle(r * M_PI * 2.0f);
+  float val = (rand() % 1000) / 1000.0f;
+  setAngle(val * M_PI * 2.0f);
 }
 
 void Movable::addAngle(float addAngle)
@@ -17,18 +17,14 @@ void Movable::setWantedAngle(float newAngle)
 {
   m_wantedAngle = fmod(newAngle, M_PI * 2);
   if (m_currentAngle < 0)
-  {
     m_wantedAngle += M_PI * 2.0f;
-  }
 }
 
 void Movable::setAngle(float newAngle)
 {
   m_currentAngle = fmod(newAngle, M_PI * 2);
   if (m_currentAngle < 0)
-  {
     m_currentAngle += M_PI * 2.0f;
-  }
 }
 
 void Movable::moveForward()

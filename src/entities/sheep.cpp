@@ -79,7 +79,7 @@ void Sheep::flock()
     moveTowardsPosition(centerOfFlock + m_flockPositionOffset, 0.8f);
 
     float flockAvergeAngle = findNeighborAngle(nearestNeighbors);
-    float randomAngleOffset = (((rand() % 1000) / 1000.0f) - 0.5f) * 1.0f;
+    // float randomAngleOffset = (((rand() % 1000) / 1000.0f) - 0.5f) * 1.0f;
     setWantedAngle(flockAvergeAngle);
     // setWantedAngle(0);
   }
@@ -109,6 +109,7 @@ void Sheep::moveWithNeigbors(const std::vector<Movable *> &neighbors)
 {
 }
 
+// find nearest Movable in the given list
 Movable *Sheep::findNearest(const std::vector<Movable *> *list)
 {
   if (list->size() == 0)
@@ -122,7 +123,8 @@ Movable *Sheep::findNearest(const std::vector<Movable *> *list)
   {
     float newDistance = Vector2::DistanceSquared(list->at(i)->getPosition(), getPosition());
 
-    if (newDistance < 2.0f)
+    // Ignore self
+    if (newDistance < 1.0f)
       continue;
 
     if (newDistance < minDistance)
@@ -142,6 +144,7 @@ Movable *Sheep::findNearestOnGrid(std::vector<std::vector<Movable *>> *gridList,
   return nullptr;
 }
 
+// find nearest neigbors using ViewRange
 std::vector<Movable *> Sheep::findNeighbors(const std::vector<std::vector<Movable *>> &gridList)
 {
   std::vector<Movable *> near;
@@ -153,6 +156,7 @@ std::vector<Movable *> Sheep::findNeighbors(const std::vector<std::vector<Movabl
       int xPos = std::clamp(x, 0, (int)Settings::SCREEN_WIDTH - 1);
       int yPos = std::clamp(y, 0, (int)Settings::SCREEN_HEIGHT - 1);
 
+      // TODO: Ignore dogs
       Movable *newMovable = m_sheepGrid[yPos][xPos];
       if (newMovable != nullptr)
       {
@@ -164,9 +168,9 @@ std::vector<Movable *> Sheep::findNeighbors(const std::vector<std::vector<Movabl
   return near;
 }
 
+// Find the center position of the neighbors
 Vector2 Sheep::findNeighborCenter(const std::vector<Movable *> &neighbors)
 {
-
   float totalX = 0;
   float totalY = 0;
   int count = neighbors.size();
@@ -180,6 +184,7 @@ Vector2 Sheep::findNeighborCenter(const std::vector<Movable *> &neighbors)
   return Vector2(totalX / count, totalY / count);
 }
 
+// Get average angle out of all the neigbors
 float Sheep::findNeighborAngle(const std::vector<Movable *> &neighbors)
 {
   if (neighbors.size() == 0)
@@ -188,15 +193,12 @@ float Sheep::findNeighborAngle(const std::vector<Movable *> &neighbors)
   float averageAngle = 0;
   int count = neighbors.size();
 
-  std::vector<Vector2> angleVectors;
-
   float totalX = 0;
   float totalY = 0;
 
   for (auto &n : neighbors)
   {
     Vector2 vectorFromAngle = Vector2::AngleToVector(n->getAngle());
-    angleVectors.push_back(vectorFromAngle);
     totalX += vectorFromAngle.X;
     totalY += vectorFromAngle.Y;
   }

@@ -23,7 +23,7 @@ private:
   void moveTowardsPosition(Vector2 pos, float multiplier = 1.0f, float distanceCap = 2.0f);
   void moveWithNeigbors(const std::vector<Movable *> &neighbors);
 
-  void flock();
+  void flock(); // FLOCK AI
 
   Movable *findNearest(const std::vector<Movable *> *list);
   Movable *findNearestOnGrid(std::vector<std::vector<Movable *>> *gridList, std::vector<Movable *> *list);

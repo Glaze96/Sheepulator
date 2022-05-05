@@ -55,6 +55,8 @@ void Movable::moveRandom(float magnitude)
 void Movable::turnTowardsWantedAngle()
 {
   float dif = 0;
+  
+  // create difference const variable
 
   if (abs(m_wantedAngle - m_currentAngle) < M_PI)
     dif = m_wantedAngle - m_currentAngle;

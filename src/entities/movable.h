@@ -12,7 +12,6 @@ public:
 public:
   float getAngle() { return m_currentAngle; }
   void setWantedAngle(float newAngle);
-  void setCurrentAngle(float newAngle);
 
 public:
   void move(float x, float y);
@@ -24,6 +23,7 @@ public:
 private:
   void addAngle(float angle);
   void turnTowardsWantedAngle();
+  void setCurrentAngle(float newAngle);
 
 protected:
   float m_speed; // Base speed

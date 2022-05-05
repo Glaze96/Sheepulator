@@ -21,9 +21,9 @@ Sheep::Sheep(float startX,
   setPosition(startX, startY);
   m_sheepGrid[startY][startX] = this;
 
-  m_turnSpeed = 0.3f;
+  m_turnSpeed = 3.0f;
   // m_speed = (((rand() % 1000) / 1000) * 0.6f) + 0.15f; // give a random speed
-  m_speed = 10.0f;
+  m_speed = 30.0f;
   m_viewRange = 40;
 }
 
@@ -80,7 +80,7 @@ void Sheep::flock()
 
     float flockAvergeAngle = findNeighborAngle(nearestNeighbors);
     float randomAngleOffset = (((rand() % 1000) / 1000.0f) - 0.5f) * 1.0f;
-    setCurrentAngle(flockAvergeAngle);
+    setWantedAngle(flockAvergeAngle);
     // setWantedAngle(0);
   }
   else

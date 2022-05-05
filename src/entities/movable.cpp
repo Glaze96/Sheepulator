@@ -12,7 +12,7 @@ Movable::Movable()
 
 void Movable::addAngle(float addAngle)
 {
-  setCurrentAngle(m_currentAngle + addAngle);
+  setCurrentAngle(m_currentAngle + (addAngle * Time::Instance()->DeltaTime));
 }
 
 void Movable::setWantedAngle(float newAngle)

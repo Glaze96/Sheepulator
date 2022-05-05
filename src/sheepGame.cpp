@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include "input/inputManager.h"
+#include <math.h>
 
 SheepGame::SheepGame(SDL_Renderer **renderer, uint32_t screenWidth, uint32_t screenHeight) : Game(renderer, screenWidth, screenHeight){};
 
@@ -23,8 +24,6 @@ void SheepGame::init()
     }
     m_sheepGrid.push_back(row);
   }
-
-  std::cout << "Y: " << m_sheepGrid.size() << ", X: " << m_sheepGrid[0].size() << std::endl;
 }
 
 bool SheepGame::update(uint32_t countedFrames)
@@ -40,6 +39,14 @@ bool SheepGame::update(uint32_t countedFrames)
     for (auto dog : m_dogList)
       delete dog;
     m_dogList.clear();
+
+    for (int y = 0; y < m_sheepGrid.size() - 1; y++)
+    {
+      for (int x = 0; x < m_sheepGrid[0].size() - 1; x++)
+      {
+        m_sheepGrid[y][x] = nullptr;
+      }
+    }
   }
 
   // Spawn 'x' amount of sheep at random positions when pressing 2 key
@@ -50,7 +57,7 @@ bool SheepGame::update(uint32_t countedFrames)
     {
       float randX = (rand() % (int)m_screenWidth);
       float randY = (rand() % (int)m_screenHeight);
-      Sheep *sheep = new Sheep(randX, randY, 0.5f, 20, &m_sheepList, &m_dogList, m_sheepGrid);
+      Sheep *sheep = new Sheep(randX, randY, 0.2f, 20, &m_sheepList, &m_dogList, m_sheepGrid);
       m_sheepList.push_back(sheep);
     }
 
@@ -73,18 +80,17 @@ bool SheepGame::update(uint32_t countedFrames)
   if (input->isKeyDown(SDL_SCANCODE_RETURN))
   {
     int counter = 0;
-    for (int x = 0; x < m_sheepGrid.size() - 1; x++)
+    for (int y = 0; y < m_sheepGrid.size() - 1; y++)
     {
-      for (int y = 0; y < m_sheepGrid[0].size() - 1; y++)
+      for (int x = 0; x < m_sheepGrid[0].size() - 1; x++)
       {
-        if (m_sheepGrid[x][y] != nullptr)
-        {
+        if (m_sheepGrid[y][x] != nullptr)
           counter++;
-        }
       }
     }
     std::cout << "Num sheep: " << m_sheepList.size() << std::endl;
     std::cout << "Num sheep on grid: " << counter << std::endl;
+    std::cout << "Num dogs on grid: " << m_dogList.size() << std::endl;
   }
 
   // Spawn one sheep center
@@ -92,10 +98,9 @@ bool SheepGame::update(uint32_t countedFrames)
   {
     float randX = Settings::SCREEN_WIDTH / 2;
     float randY = Settings::SCREEN_HEIGHT / 2;
-    Sheep *sheep = new Sheep(randX, randY, 0.5f, 20, &m_sheepList, &m_dogList, m_sheepGrid);
+    Sheep *sheep = new Sheep(randX, randY, 0.2f, 20, &m_sheepList, &m_dogList, m_sheepGrid);
     m_sheepList.push_back(sheep);
     sheep->init();
-
   }
 
   // Quit if pressing ESCAPE key

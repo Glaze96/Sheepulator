@@ -61,7 +61,7 @@ bool SheepGame::update(float deltaTime)
     {
       float randX = (rand() % (int)m_screenWidth);
       float randY = (rand() % (int)m_screenHeight);
-      Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_sheepGrid);
+      Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_sheepGrid, m_chunks);
       m_sheepList.push_back(sheep);
     }
 
@@ -102,7 +102,7 @@ bool SheepGame::update(float deltaTime)
   {
     float randX = Settings::SCREEN_WIDTH / 2;
     float randY = Settings::SCREEN_HEIGHT / 2;
-    Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_sheepGrid);
+    Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_sheepGrid, m_chunks);
     m_sheepList.push_back(sheep);
     sheep->init();
   }
@@ -125,7 +125,7 @@ bool SheepGame::update(float deltaTime)
     int mouseY = input->getMouseY();
     int randomX = (rand() % 10) - 5;
     int randomY = (rand() % 10) - 5;
-    Sheep *sheep = new Sheep(mouseX + randomX, mouseY + randomY, &m_sheepList, &m_dogList, m_sheepGrid);
+    Sheep *sheep = new Sheep(mouseX + randomX, mouseY + randomY, &m_sheepList, &m_dogList, m_sheepGrid, m_chunks);
     m_sheepList.push_back(sheep);
   }
 

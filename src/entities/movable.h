@@ -1,5 +1,4 @@
 #pragma once
-#include <math.h>
 #include "renderable.h"
 #include "../math/vector2.h"
 #include <iostream>

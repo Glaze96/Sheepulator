@@ -5,6 +5,7 @@
 #include "../math/vector2.h"
 #include "movable.h"
 #include "dog.h"
+#include "helpers/chunk.h"
 
 class Sheep : public Movable
 {
@@ -13,7 +14,8 @@ public:
         float startY,
         std::vector<Movable *> *sheepList,
         std::vector<Movable *> *dogList,
-        std::vector<std::vector<Movable *>> &sheepGrid);
+        std::vector<std::vector<Movable *>> &sheepGrid,
+        std::vector<Chunk> &chunks);
   void init();
 
 public:
@@ -39,6 +41,8 @@ private:
   Movable *m_nearestDog;
   std::vector<Movable *> *m_neighbors;
   std::vector<std::vector<Movable *>> &m_sheepGrid;
+
+  std::vector<Chunk> &m_chunks;
 
   bool m_inFlock;
   

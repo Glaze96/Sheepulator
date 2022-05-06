@@ -13,10 +13,12 @@ Sheep::Sheep(float startX,
              float startY,
              std::vector<Movable *> *sheepList,
              std::vector<Movable *> *dogList,
-             std::vector<std::vector<Movable *>> &sheepGrid) : Movable(),
-                                                               m_sheepList(sheepList),
-                                                               m_dogList(dogList),
-                                                               m_sheepGrid(sheepGrid)
+             std::vector<std::vector<Movable *>> &sheepGrid,
+             std::vector<Chunk> &chunks) : Movable(),
+                                           m_sheepList(sheepList),
+                                           m_dogList(dogList),
+                                           m_sheepGrid(sheepGrid),
+                                           m_chunks(chunks)
 {
   setPosition(startX, startY);
   m_sheepGrid[startY][startX] = this;

@@ -1,6 +1,4 @@
-#define _USE_MATH_DEFINES
 #include "dog.h"
-#include <cmath>
 
 Dog::Dog(float startX,
          float startY,

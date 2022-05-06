@@ -6,7 +6,9 @@
 #include <math.h>
 #include "settings.h"
 
-SheepGame::SheepGame(SDL_Renderer **renderer, uint32_t screenWidth, uint32_t screenHeight) : Game(renderer, screenWidth, screenHeight){};
+SheepGame::SheepGame(SDL_Renderer **renderer, uint32_t screenWidth, uint32_t screenHeight) :
+ Game(renderer, screenWidth, screenHeight)
+ {};
 
 void SheepGame::init()
 {
@@ -28,10 +30,12 @@ void SheepGame::init()
     }
     m_sheepGrid.push_back(row);
   }
+  m_chunkManager.generateChunks(m_screenWidth, m_screenHeight, 80);
 }
 
-bool SheepGame::update(float deltaTime)
+bool SheepGame::update()
 {
+
   InputManager *input = InputManager::getInstance();
 
   if (input->isKeyDown(SDL_SCANCODE_SPACE))
@@ -61,7 +65,7 @@ bool SheepGame::update(float deltaTime)
     {
       float randX = (rand() % (int)m_screenWidth);
       float randY = (rand() % (int)m_screenHeight);
-      Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_sheepGrid, m_chunks);
+      Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_sheepGrid, m_chunkManager);
       m_sheepList.push_back(sheep);
     }
 
@@ -102,7 +106,7 @@ bool SheepGame::update(float deltaTime)
   {
     float randX = Settings::SCREEN_WIDTH / 2;
     float randY = Settings::SCREEN_HEIGHT / 2;
-    Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_sheepGrid, m_chunks);
+    Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_sheepGrid, m_chunkManager);
     m_sheepList.push_back(sheep);
     sheep->init();
   }
@@ -125,7 +129,7 @@ bool SheepGame::update(float deltaTime)
     int mouseY = input->getMouseY();
     int randomX = (rand() % 10) - 5;
     int randomY = (rand() % 10) - 5;
-    Sheep *sheep = new Sheep(mouseX + randomX, mouseY + randomY, &m_sheepList, &m_dogList, m_sheepGrid, m_chunks);
+    Sheep *sheep = new Sheep(mouseX + randomX, mouseY + randomY, &m_sheepList, &m_dogList, m_sheepGrid, m_chunkManager);
     m_sheepList.push_back(sheep);
   }
 
@@ -138,14 +142,16 @@ bool SheepGame::update(float deltaTime)
     m_dogList.push_back(dog);
   }
 
-  updateSheep(deltaTime);
+  m_chunkManager.updateChunks(m_sheepList);
+  updateSheep();
 
   // Update dogs
   for (int i = 0; i < m_dogList.size(); i++)
   {
     Dog *dog = (Dog *)m_dogList.at(i);
-    dog->update(deltaTime);
+    dog->update();
   }
+
 
   // Keep looping
   return true;
@@ -181,12 +187,12 @@ void SheepGame::render()
  *
  */
 
-void SheepGame::updateSheep(float deltaTime)
+void SheepGame::updateSheep()
 {
   for (int i = 0; i < m_sheepList.size(); i++)
   {
     Sheep *sheep = (Sheep *)m_sheepList.at(i);
 
-    sheep->update(deltaTime); // update sheep will also update sheep instances pos in grid.
+    sheep->update(); // update sheep will also update sheep instances pos in grid.
   }
 }

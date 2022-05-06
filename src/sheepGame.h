@@ -9,6 +9,7 @@
 #include "entities/dog.h"
 
 #include "entities/helpers/chunk.h"
+#include "entities/helpers/chunkManager.h"
 
 class SheepGame : public Game
 {
@@ -17,18 +18,16 @@ public:
 
 public:
   void init() override;
-  bool update(float deltaTime) override;
+  bool update() override;
   void render() override;
 
 private:
-  void updateSheep(float deltaTime);
+  void updateSheep();
 
 private:
   std::vector<Movable *> m_sheepList; // Holds all the sheep (objects) in a vector
   std::vector<Movable *> m_dogList;   // Holds all the sheep (objects) in a vector
   std::vector<std::vector<Movable *>> m_sheepGrid;
   const uint32_t m_numSheep = 100; // Num sheep to spawn
-  std::vector<Chunk> m_chunks;
-
-  // INOUT
+  ChunkManager m_chunkManager;
 };

@@ -10,7 +10,7 @@ Dog::Dog(float startX,
   m_speed = speed;
 }
 
-void Dog::update(float deltaTime)
+void Dog::update()
 {
   moveRandom(1.0f);
 }

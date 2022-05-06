@@ -8,8 +8,14 @@ public:
   Chunk(int posX, int posY, int width);
 
 public:
-  int PosX;
-  int PosY;
-  int Width;
-  std::vector<Movable *> Movables;
+  bool isInChunk(Movable *movable);
+  void addToChunk(Movable *movable);
+  void clearChunk();
+  std::vector<Movable *> getMovables();
+  
+private:
+  int m_worldPosX;
+  int m_worldPosY;
+  int m_width;
+  std::vector<Movable *> m_movables;
 };

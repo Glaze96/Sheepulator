@@ -6,6 +6,7 @@
 #include "movable.h"
 #include "dog.h"
 #include "helpers/chunk.h"
+#include "helpers/chunkManager.h"
 
 class Sheep : public Movable
 {
@@ -15,11 +16,11 @@ public:
         std::vector<Movable *> *sheepList,
         std::vector<Movable *> *dogList,
         std::vector<std::vector<Movable *>> &sheepGrid,
-        std::vector<Chunk> &chunks);
+        ChunkManager &chunkManager);
   void init();
 
 public:
-  void update(float deltaTime); // Main logic loop
+  void update(); // Main logic loop
 
 private:
   void moveTowardsPosition(Vector2 pos, float multiplier = 1.0f, float distanceCap = 2.0f);
@@ -42,7 +43,7 @@ private:
   std::vector<Movable *> *m_neighbors;
   std::vector<std::vector<Movable *>> &m_sheepGrid;
 
-  std::vector<Chunk> &m_chunks;
+  ChunkManager &m_chunkManager;
 
   bool m_inFlock;
   

@@ -8,24 +8,25 @@
 #include <iostream>
 #include <cmath>
 #include "../settings.h"
+#include "../globals.h"
 
 Sheep::Sheep(float startX,
              float startY,
              std::vector<Movable *> *sheepList,
              std::vector<Movable *> *dogList,
              std::vector<std::vector<Movable *>> &sheepGrid,
-             std::vector<Chunk> &chunks) : Movable(),
+             ChunkManager &chunkManager) : Movable(),
                                            m_sheepList(sheepList),
                                            m_dogList(dogList),
                                            m_sheepGrid(sheepGrid),
-                                           m_chunks(chunks)
+                                           m_chunkManager(chunkManager)
 {
   setPosition(startX, startY);
   m_sheepGrid[startY][startX] = this;
 
-  m_turnSpeed = 3.0f;
+  m_turnSpeed = 0.08f;
   // m_speed = (((rand() % 1000) / 1000) * 0.6f) + 0.15f; // give a random speed
-  m_speed = 30.0f;
+  m_speed = 20.0f;
   m_viewRange = 40;
 }
 
@@ -41,7 +42,7 @@ void Sheep::init()
  * 3. Set new position in sheepGrid
  *
  */
-void Sheep::update(float deltaTime)
+void Sheep::update()
 {
 
   int y = (int)getPosition().Y;
@@ -57,7 +58,9 @@ void Sheep::update(float deltaTime)
 
 void Sheep::flock()
 {
-  std::vector<Movable *> nearestNeighbors = findNeighbors(m_sheepGrid);
+  // std::vector<Movable *> nearestNeighbors = findNeighbors(m_sheepGrid);
+  std::vector<Movable *> nearestNeighbors = m_chunkManager.getMovablesInChunk(m_currentChunk);
+
   int numNeigbors = nearestNeighbors.size();
 
   // CHECK FOR FLOCK
@@ -87,8 +90,11 @@ void Sheep::flock()
   }
   else
   {
-    float r = ((rand() % 1000) / 1000.0f) * M_PI * 2.0f;
-    setWantedAngle(r);
+    if (Time::Instance()->FrameCounter % 30 == 0)
+    {
+      float r = ((rand() % 1000) / 1000.0f) * M_PI * 2.0f;
+      setWantedAngle(r);
+    }
   }
 
   moveForward(1.0f);

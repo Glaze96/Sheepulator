@@ -61,7 +61,7 @@ int main(int argc, char *args[])
 
     InputManager::getInstance()->update();
 
-    running = game.update(lastFrameTime);
+    running = game.update();
     
     // Clear window to black
     SDL_SetRenderDrawColor(renderer, 5, 50, 10, 255);
@@ -84,6 +84,7 @@ int main(int argc, char *args[])
     elapsed = finish - start;
     lastFrameTime = elapsed.count();
     Time::Instance()->DeltaTime = lastFrameTime;
+    Time::Instance()->FrameCounter++;
     secondCounter += elapsed.count();
 
     // Happens EVERY one second

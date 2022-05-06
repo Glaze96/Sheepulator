@@ -14,7 +14,7 @@ public:
       std::vector<Movable *> &dogList);
 
 public:
-  void update(float deltaTime); // Main logic loop
+  void update(); // Main logic loop
 private:
   std::vector<Movable *> &m_sheepList;
   std::vector<Movable *> &m_dogList;

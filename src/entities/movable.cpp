@@ -12,7 +12,7 @@ Movable::Movable()
 
 void Movable::addAngle(float addAngle)
 {
-  setCurrentAngle(m_currentAngle + (addAngle * Time::Instance()->DeltaTime));
+  setCurrentAngle(m_currentAngle + addAngle);
 }
 
 void Movable::setWantedAngle(float newAngle)
@@ -20,6 +20,10 @@ void Movable::setWantedAngle(float newAngle)
   m_wantedAngle = fmod(newAngle, M_PI * 2.0f);
   if (m_currentAngle < 0)
     m_wantedAngle += M_PI * 2.0f;
+}
+
+void Movable::setCurrentChunk(Chunk *chunk) {
+  m_currentChunk = chunk;
 }
 
 void Movable::setCurrentAngle(float newAngle)
@@ -47,9 +51,11 @@ void Movable::move(const Vector2 &distance)
 
 void Movable::moveRandom(float magnitude)
 {
-  float r = ((rand() % 1000) / 1000.0f) * M_PI * 2.0f;
-  setWantedAngle(r);
-  moveForward();
+  // float r = ((rand() % 1000) / 1000.0f) * M_PI * 2.0f;
+  // setWantedAngle(r);
+  // setWantedAngle(M_PI);
+  // moveForward();
+  std::cout << "MOVE RANDOM NOT IMPLEMENTED" << std::endl;
 }
 
 void Movable::turnTowardsWantedAngle()

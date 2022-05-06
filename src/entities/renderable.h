@@ -1,4 +1,5 @@
-struct SDL_Renderer;
+#pragma once
+#include <SDL2/SDL.h>
 #include "../math/vector2.h"
 #include "../settings.h"
 #include <algorithm>

@@ -1,7 +1,8 @@
 #pragma once
-#include "renderable.h"
-#include "../math/vector2.h"
 #include <iostream>
+#include "../math/vector2.h"
+struct Chunk;
+#include "renderable.h"
 
 class Movable : public Renderable
 {
@@ -19,6 +20,8 @@ public:
   void moveForward(float multiplier = 1.0f); // Move forward using current direction and speed
   void moveRandom(float magnitude);
 
+  void setCurrentChunk(Chunk* chunk);
+
 private:
   void addAngle(float angle);
   void turnTowardsWantedAngle();
@@ -29,4 +32,5 @@ protected:
   float m_currentAngle; // Radians
   float m_wantedAngle;
   float m_turnSpeed; // Turn speed in steps (radians) 0-1 , 1 = full snap
+  Chunk* m_currentChunk;
 };

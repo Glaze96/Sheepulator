@@ -12,7 +12,7 @@
 				"-o",
 				"${workspaceFolder}\\bin\\sheepulator.exe",
 				"./src/*.cpp",
-				"./src/entities/helpers/*.cpp",
+				"./src/entities/chunk/*.cpp",
 				"./src/entities/*.cpp",
 				"./src/math/*.cpp",
 				"./src/input/*.cpp",

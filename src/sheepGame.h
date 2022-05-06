@@ -27,7 +27,6 @@ private:
 private:
   std::vector<Movable *> m_sheepList; // Holds all the sheep (objects) in a vector
   std::vector<Movable *> m_dogList;   // Holds all the sheep (objects) in a vector
-  std::vector<std::vector<Movable *>> m_sheepGrid;
   const uint32_t m_numSheep = 100; // Num sheep to spawn
   ChunkManager m_chunkManager;
 };

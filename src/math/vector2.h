@@ -86,7 +86,7 @@ public:
     return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
   }
 
-  static Vector2 AngleToVector(float angle)
+  static Vector2 VectorFromAngle(float angle)
   {
     return Vector2(cos(angle), sin(angle));
   }
@@ -94,6 +94,6 @@ public:
   static Vector2 RandomUnitVector()
   {
     float randomAngle = ((rand() % 1000) / 1000.0f) * M_PI * 2.0f;
-    return AngleToVector(randomAngle);
+    return VectorFromAngle(randomAngle);
   }
 };

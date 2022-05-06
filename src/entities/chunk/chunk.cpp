@@ -1,13 +1,18 @@
 #include "chunk.h"
 
-Chunk::Chunk(int worldPosX, int worldPosY, int width) : m_worldPosX(worldPosX), m_worldPosY(worldPosY), m_width(width){};
+Chunk::Chunk(int chunkPosX,
+             int chunkPosY,
+             int width) : m_worldPosX(chunkPosX * width),
+                          m_worldPosY(chunkPosY * width),
+                          m_chunkPosX(chunkPosX),
+                          m_chunkPosY(chunkPosY),
+                          m_width(width){};
 
 bool Chunk::isInChunk(Movable *movable)
 {
   Vector2 movablePos = movable->getPosition();
-  Vector2 chunkPos = Vector2(m_worldPosX, m_worldPosY);
-  if (movablePos.X >= chunkPos.X && movablePos.X < chunkPos.X + m_width &&
-      movablePos.Y >= chunkPos.Y && movablePos.Y < chunkPos.Y + m_width)
+  if (movablePos.X >= m_worldPosX && movablePos.X < m_worldPosX + m_width &&
+      movablePos.Y >= m_worldPosY && movablePos.Y < m_worldPosY + m_width)
   {
     return true;
   }

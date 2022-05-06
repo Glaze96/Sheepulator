@@ -5,7 +5,7 @@
 class Chunk
 {
 public:
-  Chunk(int posX, int posY, int width);
+  Chunk(int chunkPosX, int chunkPosY, int width);
 
 public:
   bool isInChunk(Movable *movable);
@@ -14,8 +14,8 @@ public:
   std::vector<Movable *> getMovables();
   
 private:
-  int m_worldPosX;
-  int m_worldPosY;
+  int m_worldPosX, m_worldPosY;
+  int m_chunkPosX, m_chunkPosY;
   int m_width;
   std::vector<Movable *> m_movables;
 };

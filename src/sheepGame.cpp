@@ -21,16 +21,7 @@ void SheepGame::init()
   std::cout << "LEFT MOUSE CLICK TO SPAWN SHEEP" << std::endl;
   std::cout << "RIGHT MOUSE CLICK TO SPAWN DOG" << std::endl;
 
-  for (int y = 0; y < m_screenHeight; y++)
-  {
-    std::vector<Movable *> row;
-    for (int x = 0; x < m_screenWidth; x++)
-    {
-      row.push_back(nullptr);
-    }
-    m_sheepGrid.push_back(row);
-  }
-  m_chunkManager.generateChunks(m_screenWidth, m_screenHeight, 80);
+  m_chunkManager.generateChunks(m_screenWidth, m_screenHeight, 40);
 }
 
 bool SheepGame::update()
@@ -48,13 +39,6 @@ bool SheepGame::update()
       delete dog;
     m_dogList.clear();
 
-    for (int y = 0; y < m_sheepGrid.size() - 1; y++)
-    {
-      for (int x = 0; x < m_sheepGrid[0].size() - 1; x++)
-      {
-        m_sheepGrid[y][x] = nullptr;
-      }
-    }
   }
 
   // Spawn 'x' amount of sheep at random positions when pressing 2 key
@@ -65,7 +49,7 @@ bool SheepGame::update()
     {
       float randX = (rand() % (int)m_screenWidth);
       float randY = (rand() % (int)m_screenHeight);
-      Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_sheepGrid, m_chunkManager);
+      Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_chunkManager);
       m_sheepList.push_back(sheep);
     }
 
@@ -87,18 +71,7 @@ bool SheepGame::update()
 
   if (input->isKeyDown(SDL_SCANCODE_RETURN))
   {
-    int counter = 0;
-    for (int y = 0; y < m_sheepGrid.size() - 1; y++)
-    {
-      for (int x = 0; x < m_sheepGrid[0].size() - 1; x++)
-      {
-        if (m_sheepGrid[y][x] != nullptr)
-          counter++;
-      }
-    }
     std::cout << "Num sheep: " << m_sheepList.size() << std::endl;
-    std::cout << "Num sheep on grid: " << counter << std::endl;
-    std::cout << "Num dogs on grid: " << m_dogList.size() << std::endl;
   }
 
   // Spawn one sheep center
@@ -106,7 +79,7 @@ bool SheepGame::update()
   {
     float randX = Settings::SCREEN_WIDTH / 2;
     float randY = Settings::SCREEN_HEIGHT / 2;
-    Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_sheepGrid, m_chunkManager);
+    Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_chunkManager);
     m_sheepList.push_back(sheep);
     sheep->init();
   }
@@ -129,7 +102,7 @@ bool SheepGame::update()
     int mouseY = input->getMouseY();
     int randomX = (rand() % 10) - 5;
     int randomY = (rand() % 10) - 5;
-    Sheep *sheep = new Sheep(mouseX + randomX, mouseY + randomY, &m_sheepList, &m_dogList, m_sheepGrid, m_chunkManager);
+    Sheep *sheep = new Sheep(mouseX + randomX, mouseY + randomY, &m_sheepList, &m_dogList, m_chunkManager);
     m_sheepList.push_back(sheep);
   }
 

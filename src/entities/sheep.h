@@ -15,7 +15,6 @@ public:
         float startY,
         std::vector<Movable *> *sheepList,
         std::vector<Movable *> *dogList,
-        std::vector<std::vector<Movable *>> &sheepGrid,
         ChunkManager &chunkManager);
   void init();
 
@@ -29,8 +28,6 @@ private:
   void flock(); // FLOCK AI
 
   Movable *findNearest(const std::vector<Movable *> *list);
-  Movable *findNearestOnGrid(std::vector<std::vector<Movable *>> *gridList, std::vector<Movable *> *list);
-  std::vector<Movable *> findNeighbors(const std::vector<std::vector<Movable *>> &gridList);
 
   Vector2 findNeighborCenter(const std::vector<Movable *> &neigbors);
   float findNeighborAngle(const std::vector<Movable *> &neigbors);
@@ -41,7 +38,6 @@ private:
   Movable *m_nearestSheep;
   Movable *m_nearestDog;
   std::vector<Movable *> *m_neighbors;
-  std::vector<std::vector<Movable *>> &m_sheepGrid;
 
   ChunkManager &m_chunkManager;
 

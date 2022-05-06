@@ -36,7 +36,7 @@ void Movable::setCurrentAngle(float newAngle)
 void Movable::moveForward(float multiplier)
 {
   turnTowardsWantedAngle();
-  move(Vector2::AngleToVector(m_currentAngle) * m_speed * multiplier);
+  move(Vector2::VectorFromAngle(m_currentAngle) * m_speed * multiplier);
 }
 
 void Movable::move(float x, float y)

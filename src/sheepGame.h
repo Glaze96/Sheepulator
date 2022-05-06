@@ -8,8 +8,8 @@
 #include "entities/sheep.h"
 #include "entities/dog.h"
 
-#include "entities/helpers/chunk.h"
-#include "entities/helpers/chunkManager.h"
+#include "entities/chunk/chunk.h"
+#include "entities/chunk/chunkManager.h"
 
 class SheepGame : public Game
 {

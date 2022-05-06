@@ -5,8 +5,8 @@
 #include "../math/vector2.h"
 #include "movable.h"
 #include "dog.h"
-#include "helpers/chunk.h"
-#include "helpers/chunkManager.h"
+#include "chunk/chunk.h"
+#include "chunk/chunkManager.h"
 
 class Sheep : public Movable
 {

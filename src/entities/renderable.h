@@ -12,11 +12,8 @@ public:
   inline Vector2 getPosition() { return m_position; };
   inline void setPosition(float x, float y)
   {
-    x = std::clamp(x, 0.0f, (float)Settings::SCREEN_WIDTH - 1.0f);
-    y = std::clamp(y, 0.0f, (float)Settings::SCREEN_HEIGHT - 1.0f);
-
-    m_position.X = x;
-    m_position.Y = y;
+    m_position.X = std::clamp(x, 0.0f, (float)Settings::SCREEN_WIDTH - 1.0f);
+    m_position.Y = std::clamp(y, 0.0f, (float)Settings::SCREEN_HEIGHT - 1.0f);
   };
 
   inline void addPosition(float x, float y)

@@ -22,7 +22,8 @@
 				"-lSDL2main",
 				"-lSDL2_test",
 				"-lSDL2.dll",
-				"-std=c++17"
+				"-std=c++17",
+				"-O3"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"

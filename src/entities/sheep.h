@@ -15,7 +15,8 @@ public:
         float startY,
         std::vector<Movable *> *sheepList,
         std::vector<Movable *> *dogList,
-        ChunkManager &chunkManager);
+        ChunkManager &chunkManager,
+        Vector2 playArea);
   void init();
 
 public:
@@ -31,6 +32,7 @@ private:
 
   Vector2 findNeighborCenter(const std::vector<Movable *> &neigbors);
   float findNeighborAngle(const std::vector<Movable *> &neigbors);
+  void setNeighborAngle(const std::vector<Movable *> &neigbors, float angle);
 
 private:
   std::vector<Movable *> *m_sheepList;
@@ -48,4 +50,6 @@ private:
   int m_viewRange;
   Vector2 m_flockPositionOffset;
   int m_smartTick;
+
+  Vector2 m_playArea;
 };

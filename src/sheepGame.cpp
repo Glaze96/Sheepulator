@@ -7,7 +7,7 @@
 #include "settings.h"
 
 SheepGame::SheepGame(SDL_Renderer **renderer, uint32_t screenWidth, uint32_t screenHeight) :
- Game(renderer, screenWidth, screenHeight)
+ Game(renderer, screenWidth, screenHeight), m_playArea(Vector2(screenWidth, screenHeight))
  {};
 
 void SheepGame::init()
@@ -49,7 +49,7 @@ bool SheepGame::update()
     {
       float randX = (rand() % (int)m_screenWidth);
       float randY = (rand() % (int)m_screenHeight);
-      Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_chunkManager);
+      Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_chunkManager, m_playArea);
       m_sheepList.push_back(sheep);
     }
 
@@ -79,7 +79,7 @@ bool SheepGame::update()
   {
     float randX = Settings::SCREEN_WIDTH / 2;
     float randY = Settings::SCREEN_HEIGHT / 2;
-    Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_chunkManager);
+    Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_chunkManager, m_playArea);
     m_sheepList.push_back(sheep);
     sheep->init();
   }
@@ -102,7 +102,7 @@ bool SheepGame::update()
     int mouseY = input->getMouseY();
     int randomX = (rand() % 10) - 5;
     int randomY = (rand() % 10) - 5;
-    Sheep *sheep = new Sheep(mouseX + randomX, mouseY + randomY, &m_sheepList, &m_dogList, m_chunkManager);
+    Sheep *sheep = new Sheep(mouseX + randomX, mouseY + randomY, &m_sheepList, &m_dogList, m_chunkManager, m_playArea);
     m_sheepList.push_back(sheep);
   }
 

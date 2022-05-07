@@ -29,4 +29,5 @@ private:
   std::vector<Movable *> m_dogList;   // Holds all the sheep (objects) in a vector
   const uint32_t m_numSheep = 100; // Num sheep to spawn
   ChunkManager m_chunkManager;
+  Vector2 m_playArea;
 };

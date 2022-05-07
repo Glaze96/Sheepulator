@@ -23,7 +23,7 @@ Sheep::Sheep(float startX,
 
   m_turnSpeed = 0.08f;
   // m_speed = (((rand() % 1000) / 1000) * 0.6f) + 0.15f; // give a random speed
-  m_speed = 20.0f;
+  m_speed = 20.0f * Time::Instance()->DeltaTime;
   m_viewRange = 40;
 }
 
@@ -77,9 +77,9 @@ void Sheep::flock()
     {
       float randomAngleOffset = (((rand() % 1000) / 500.0f) - 1.0f) * 0.1f;
     }
-    setCurrentAngle(flockAvergeAngle);
+    setWantedAngle(flockAvergeAngle);
   }
-  else
+  else // if NOT in flock
   {
     if (Time::Instance()->FrameCounter % 30 == 0)
     {
@@ -167,9 +167,11 @@ float Sheep::findNeighborAngle(const std::vector<Movable *> &neighbors)
     totalY += vectorFromAngle.Y;
   }
 
-  Vector2 finalVector(totalX / count, totalY / count);
-  // finalVector.print("Final vector");
+  Vector2 finalVector(totalX, totalY);
+  // // No need for unit vector?
+  // Vector2 finalVector(totalX / count, totalY / count);
+
   averageAngle = finalVector.getAngleRad();
-  // std::cout << "average angle: " << averageAngle << std::endl;
+  // std::cout << "Average angle: " << averageAngle << std::endl;
   return averageAngle;
 }

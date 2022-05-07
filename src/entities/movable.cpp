@@ -22,7 +22,8 @@ void Movable::setWantedAngle(float newAngle)
     m_wantedAngle += M_PI * 2.0f;
 }
 
-void Movable::setCurrentChunk(Chunk *chunk) {
+void Movable::setCurrentChunk(Chunk *chunk)
+{
   m_currentChunk = chunk;
 }
 
@@ -41,7 +42,7 @@ void Movable::moveForward(float multiplier)
 
 void Movable::move(float x, float y)
 {
-  addPosition(x * Time::Instance()->DeltaTime, y * Time::Instance()->DeltaTime);
+  addPosition(x, y);
 }
 
 void Movable::move(const Vector2 &distance)
@@ -61,7 +62,7 @@ void Movable::moveRandom(float magnitude)
 void Movable::turnTowardsWantedAngle()
 {
   float dif = 0;
-  
+
   // create difference const variable
 
   if (abs(m_wantedAngle - m_currentAngle) < M_PI)

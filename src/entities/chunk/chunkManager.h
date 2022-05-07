@@ -10,7 +10,7 @@ public:
 
   std::vector<Chunk *> getSurroundingChunks(Chunk *chunk);
   std::vector<Movable *> getMovablesInChunk(Chunk *chunk);
-  std::vector<Movable *> getMovablesInChunkSurrounding(const Vector2 &movablePosition);
+  std::vector<Movable *> getMovablesInChunkSurrounding(const Vector2 &movablePosition, float viewRange);
 
   // Always update chunks
   void updateChunks(const std::vector<Movable *> &movabales);

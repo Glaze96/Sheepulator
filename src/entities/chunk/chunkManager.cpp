@@ -50,7 +50,7 @@ std::vector<Movable *> ChunkManager::getMovablesInChunk(Chunk *chunk)
   return std::vector<Movable *>();
 }
 
-std::vector<Movable *> ChunkManager::getMovablesInChunkSurrounding(const Vector2 &movablePosition)
+std::vector<Movable *> ChunkManager::getMovablesInChunkSurrounding(const Vector2 &movablePosition, float viewRange)
 {
   std::vector<Movable *> finalMovables;
   int chunkPosX = movablePosition.X / (float)m_chunkWidth;
@@ -62,9 +62,16 @@ std::vector<Movable *> ChunkManager::getMovablesInChunkSurrounding(const Vector2
     {
       int checkPosX = std::clamp(chunkPosX + x, 0, m_numChunksX - 1);
       int checkPosY = std::clamp(chunkPosY + y, 0, m_numChunksY - 1);
-      
+
       std::vector<Movable *> movables = m_chunks[checkPosY][checkPosX].getMovables();
-      finalMovables.insert(finalMovables.end(), movables.begin(), movables.end());
+
+      for (auto &movable : movables)
+      {
+        if ((movable->getPosition() - movablePosition).magnitude() < viewRange)
+        {
+          finalMovables.push_back(movable);
+        }
+      }
     }
   }
 

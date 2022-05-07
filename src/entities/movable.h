@@ -10,7 +10,8 @@ public:
   Movable();
 
 public:
-  float getAngle() { return m_currentAngle; }
+  float getCurrentAngle() { return m_currentAngle; }
+  float getWantedAngle() { return m_wantedAngle; }
   void setWantedAngle(float newAngle);
   void setCurrentAngle(float newAngle);
 

@@ -42,7 +42,10 @@ private:
   ChunkManager &m_chunkManager;
 
   bool m_inFlock;
-  
+  float m_flockWantedAngle;
+  Vector2 m_prefferedFlockPosition;
+
   int m_viewRange;
   Vector2 m_flockPositionOffset;
+  int m_smartTick;
 };

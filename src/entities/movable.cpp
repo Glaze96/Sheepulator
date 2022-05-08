@@ -3,11 +3,17 @@
 #include <cmath>
 #include "../globals.h"
 
-Movable::Movable()
+Movable::Movable(const Vector2 &startPos,
+                 const Vector2 &playArea,
+                 float speed,
+                 float currentAngle,
+                 float turnSpeed) : Renderable(startPos),
+                                    m_playArea(playArea),
+                                    m_speed(speed),
+                                    m_currentAngle(currentAngle),
+                                    m_wantedAngle(currentAngle),
+                                    m_turnSpeed(turnSpeed)
 {
-  float val = (rand() % 1000) / 1000.0f;
-  setCurrentAngle(val * M_PI * 2.0f);
-  setWantedAngle(val * M_PI * 2.0f);
 }
 
 void Movable::addAngle(float addAngle)
@@ -73,4 +79,12 @@ void Movable::turnTowardsWantedAngle()
     dif = m_wantedAngle - m_currentAngle + M_PI * 2.0f;
 
   addAngle(dif * m_turnSpeed);
+}
+
+void Movable::moveTowardsPosition(Vector2 pos, float multiplier, float distanceCap)
+{
+  Vector2 dif = (pos - getPosition());
+
+  if (dif.magnitude() > distanceCap)
+    move(dif.normalized() * m_speed * multiplier);
 }

@@ -64,7 +64,7 @@ int main(int argc, char *args[])
     running = game.update();
     
     // Clear window to black
-    SDL_SetRenderDrawColor(renderer, 5, 50, 10, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 20, 5, 255);
     SDL_RenderClear(renderer);
 
     game.render();

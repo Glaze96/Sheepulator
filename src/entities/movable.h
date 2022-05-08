@@ -7,7 +7,7 @@ struct Chunk;
 class Movable : public Renderable
 {
 public:
-  Movable();
+  Movable(const Vector2 &startPos, const Vector2 &playArea, float speed, float currentAngle, float turnSpeed);
 
 public:
   float getCurrentAngle() { return m_currentAngle; }
@@ -23,6 +23,7 @@ public:
   void moveRandom(float magnitude);
 
   void setCurrentChunk(Chunk* chunk);
+  void moveTowardsPosition(Vector2 pos, float multiplier = 1.0f, float distanceCap = 2.0f);
 
 private:
   void addAngle(float angle);
@@ -34,4 +35,5 @@ protected:
   float m_wantedAngle;
   float m_turnSpeed; // Turn speed in steps (radians) 0-1 , 1 = full snap
   Chunk* m_currentChunk;
+  Vector2 m_playArea;
 };

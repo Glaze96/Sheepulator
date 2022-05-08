@@ -5,43 +5,33 @@
 #include "../math/vector2.h"
 #include "movable.h"
 #include "dog.h"
-#include "chunk/chunk.h"
-#include "chunk/chunkManager.h"
+#include "agent.h"
 
-class Sheep : public Movable
+class Sheep : public Agent
 {
 public:
-  Sheep(float startX,
-        float startY,
-        std::vector<Movable *> *sheepList,
-        std::vector<Movable *> *dogList,
+  Sheep(const Vector2 &startPos,
+        const Vector2 &playArea,
+        float speed,
+        float currentAngle,
+        float turnSpeed,
+        float viewRange,
         ChunkManager &chunkManager,
-        Vector2 playArea);
+        std::vector<Movable *> &sheepList,
+        std::vector<Movable *> &dogList);
+
   void init();
 
 public:
   void update(); // Main logic loop
 
 private:
-  void moveTowardsPosition(Vector2 pos, float multiplier = 1.0f, float distanceCap = 2.0f);
-  void moveWithNeigbors(const std::vector<Movable *> &neighbors);
+  void moveWithFlock(const std::vector<Movable *> &flock);
 
   void flock(); // FLOCK AI
 
-  Movable *findNearest(const std::vector<Movable *> *list);
-
-  Vector2 findNeighborCenter(const std::vector<Movable *> &neigbors);
-  float findNeighborAngle(const std::vector<Movable *> &neigbors);
-  void setNeighborAngle(const std::vector<Movable *> &neigbors, float angle);
-
 private:
-  std::vector<Movable *> *m_sheepList;
-  std::vector<Movable *> *m_dogList;
-  Movable *m_nearestSheep;
-  Movable *m_nearestDog;
-  std::vector<Movable *> *m_neighbors;
-
-  ChunkManager &m_chunkManager;
+  std::vector<Movable *> *m_flock;
 
   bool m_inFlock;
   float m_flockWantedAngle;
@@ -50,6 +40,4 @@ private:
   int m_viewRange;
   Vector2 m_flockPositionOffset;
   int m_smartTick;
-
-  Vector2 m_playArea;
 };

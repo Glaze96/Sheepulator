@@ -7,6 +7,10 @@
 class Renderable
 {
 public:
+  Renderable(float startX, float startY);
+  Renderable(const Vector2 &startPos);
+
+public:
   void render(SDL_Renderer *renderer);
 
   inline Vector2 getPosition() { return m_position; };

@@ -6,9 +6,7 @@
 #include <math.h>
 #include "settings.h"
 
-SheepGame::SheepGame(SDL_Renderer **renderer, uint32_t screenWidth, uint32_t screenHeight) :
- Game(renderer, screenWidth, screenHeight), m_playArea(Vector2(screenWidth, screenHeight))
- {};
+SheepGame::SheepGame(SDL_Renderer **renderer, uint32_t screenWidth, uint32_t screenHeight) : Game(renderer, screenWidth, screenHeight), m_playArea(Vector2(screenWidth, screenHeight)){};
 
 void SheepGame::init()
 {
@@ -17,11 +15,11 @@ void SheepGame::init()
   std::cout << "0 to add one SHEEP" << std::endl;
   std::cout << "SPACE clear all" << std::endl;
   std::cout << "RETURN for debug logs" << std::endl;
-  
+
   std::cout << "LEFT MOUSE CLICK TO SPAWN SHEEP" << std::endl;
   std::cout << "RIGHT MOUSE CLICK TO SPAWN DOG" << std::endl;
 
-  m_chunkManager.generateChunks(m_screenWidth, m_screenHeight, 40);
+  m_chunkManager.generateChunks(m_screenWidth, m_screenHeight, 80);
 }
 
 bool SheepGame::update()
@@ -38,7 +36,6 @@ bool SheepGame::update()
     for (auto dog : m_dogList)
       delete dog;
     m_dogList.clear();
-
   }
 
   // Spawn 'x' amount of sheep at random positions when pressing 2 key
@@ -47,9 +44,7 @@ bool SheepGame::update()
     // GENERATE NEW SHEEPS
     for (int i = 0; i < m_numSheep; i++)
     {
-      float randX = (rand() % (int)m_screenWidth);
-      float randY = (rand() % (int)m_screenHeight);
-      Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_chunkManager, m_playArea);
+      Sheep *sheep = getSheep();
       m_sheepList.push_back(sheep);
     }
 
@@ -65,7 +60,8 @@ bool SheepGame::update()
   {
     float randX = (rand() % (int)m_screenWidth - 1);
     float randY = (rand() % (int)m_screenHeight - 1);
-    Dog *dog = new Dog(randX, randY, 0.8f, m_sheepList, m_dogList);
+    float randAngle = ((rand() % 10000 / 10000.0f) * M_PI * 2.0f);
+    Dog *dog = new Dog(Vector2(randX, randY), m_playArea, 0.7f, randAngle, 0.08f, m_chunkManager, m_sheepList, m_dogList);
     m_dogList.push_back(dog);
   }
 
@@ -77,9 +73,7 @@ bool SheepGame::update()
   // Spawn one sheep center
   if (input->isKeyDown(SDL_SCANCODE_0))
   {
-    float randX = Settings::SCREEN_WIDTH / 2;
-    float randY = Settings::SCREEN_HEIGHT / 2;
-    Sheep *sheep = new Sheep(randX, randY, &m_sheepList, &m_dogList, m_chunkManager, m_playArea);
+    Sheep *sheep = getSheep();
     m_sheepList.push_back(sheep);
     sheep->init();
   }
@@ -97,13 +91,15 @@ bool SheepGame::update()
   }
 
   // Spawn sheep at point
-  if (input->isMousePressed(MouseButton::MOUSE_LEFT)) {
+  if (input->isMousePressed(MouseButton::MOUSE_LEFT))
+  {
     int mouseX = input->getMouseX();
     int mouseY = input->getMouseY();
     int randomX = (rand() % 10) - 5;
     int randomY = (rand() % 10) - 5;
-    Sheep *sheep = new Sheep(mouseX + randomX, mouseY + randomY, &m_sheepList, &m_dogList, m_chunkManager, m_playArea);
-    m_sheepList.push_back(sheep);
+    float randAngle = ((rand() % 10000 / 10000.0f) * M_PI * 2.0f);
+    ;
+    m_sheepList.push_back(getSheep(mouseX, mouseY));
   }
 
   // Spawn dog at mouse pos
@@ -111,7 +107,8 @@ bool SheepGame::update()
   {
     int mouseX = input->getMouseX();
     int mouseY = input->getMouseY();
-    Dog *dog = new Dog(mouseX, mouseY, 0.8f, m_sheepList, m_dogList);
+    float randAngle = ((rand() % 10000 / 10000.0f) * M_PI * 2.0f);
+    Dog *dog = new Dog(Vector2(mouseX, mouseY), m_playArea, 0.7f, randAngle, 0.08f, m_chunkManager, m_sheepList, m_dogList);
     m_dogList.push_back(dog);
   }
 
@@ -124,7 +121,6 @@ bool SheepGame::update()
     Dog *dog = (Dog *)m_dogList.at(i);
     dog->update();
   }
-
 
   // Keep looping
   return true;
@@ -168,4 +164,17 @@ void SheepGame::updateSheep()
 
     sheep->update(); // update sheep will also update sheep instances pos in grid.
   }
+}
+
+Sheep *SheepGame::getSheep(float x, float y)
+{
+  float randX = x;
+  float randY = y;
+  if (x < 0 || y < 0)
+  {
+    randX = (rand() % (int)m_screenWidth - 1);
+    randY = (rand() % (int)m_screenHeight - 1);
+  }
+  float randAngle = ((rand() % 10000 / 10000.0f) * M_PI * 2.0f);
+  return new Sheep(Vector2(randX, randY), m_playArea, 0.45f, randAngle, 0.015f, 80, m_chunkManager, m_sheepList, m_dogList);
 }

@@ -25,6 +25,7 @@ private:
   void updateSheep();
 
   Sheep *getSheep(float x = -1, float y = -1);
+  Dog *getDog(float x = -1, float y = -1);
 
 private:
   std::vector<Movable *> m_sheepList; // Holds all the sheep (objects) in a vector

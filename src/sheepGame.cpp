@@ -58,10 +58,7 @@ bool SheepGame::update()
   // Spawn dog at random position when pressing 2 key
   if (input->isKeyDown(SDL_SCANCODE_2))
   {
-    float randX = (rand() % (int)m_screenWidth - 1);
-    float randY = (rand() % (int)m_screenHeight - 1);
-    float randAngle = ((rand() % 10000 / 10000.0f) * M_PI * 2.0f);
-    Dog *dog = new Dog(Vector2(randX, randY), m_playArea, 0.7f, randAngle, 0.08f, m_chunkManager, m_sheepList, m_dogList);
+    Dog *dog = getDog();
     m_dogList.push_back(dog);
   }
 
@@ -107,8 +104,7 @@ bool SheepGame::update()
   {
     int mouseX = input->getMouseX();
     int mouseY = input->getMouseY();
-    float randAngle = ((rand() % 10000 / 10000.0f) * M_PI * 2.0f);
-    Dog *dog = new Dog(Vector2(mouseX, mouseY), m_playArea, 0.6f, randAngle, 0.08f, m_chunkManager, m_sheepList, m_dogList);
+    Dog *dog = getDog(mouseX, mouseY);
     m_dogList.push_back(dog);
   }
 
@@ -176,5 +172,18 @@ Sheep *SheepGame::getSheep(float x, float y)
     randY = (rand() % (int)m_screenHeight - 1);
   }
   float randAngle = ((rand() % 10000 / 10000.0f) * M_PI * 2.0f);
-  return new Sheep(Vector2(randX, randY), m_playArea, 0.3f, randAngle, 0.015f, 80, m_chunkManager, m_sheepList, m_dogList);
+  return new Sheep(Vector2(randX, randY), m_playArea, 0.15f, randAngle, 0.015f, 80, m_chunkManager, m_sheepList, m_dogList);
+}
+
+Dog *SheepGame::getDog(float x, float y)
+{
+  float randX = x;
+  float randY = y;
+  if (x < 0 || y < 0)
+  {
+    randX = (rand() % (int)m_screenWidth - 1);
+    randY = (rand() % (int)m_screenHeight - 1);
+  }
+  float randAngle = ((rand() % 10000 / 10000.0f) * M_PI * 2.0f);
+  return new Dog(Vector2(randX, randY), m_playArea, 0.8f, randAngle, 0.1f, m_chunkManager, m_sheepList, m_dogList);
 }

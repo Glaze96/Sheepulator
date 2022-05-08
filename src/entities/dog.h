@@ -24,4 +24,8 @@ public:
 private:
   int m_smartTick;
   float m_viewRange;
+  float m_time;
+  float m_sine;
+  float m_amplitude;
+  Vector2 m_wantedFlockPosition;
 };

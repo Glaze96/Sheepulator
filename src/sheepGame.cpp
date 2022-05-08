@@ -19,7 +19,7 @@ void SheepGame::init()
   std::cout << "LEFT MOUSE CLICK TO SPAWN SHEEP" << std::endl;
   std::cout << "RIGHT MOUSE CLICK TO SPAWN DOG" << std::endl;
 
-  m_chunkManager.generateChunks(m_screenWidth, m_screenHeight, 80);
+  m_chunkManager.generateChunks(m_screenWidth, m_screenHeight, 64);
 }
 
 bool SheepGame::update()
@@ -108,7 +108,7 @@ bool SheepGame::update()
     int mouseX = input->getMouseX();
     int mouseY = input->getMouseY();
     float randAngle = ((rand() % 10000 / 10000.0f) * M_PI * 2.0f);
-    Dog *dog = new Dog(Vector2(mouseX, mouseY), m_playArea, 0.7f, randAngle, 0.08f, m_chunkManager, m_sheepList, m_dogList);
+    Dog *dog = new Dog(Vector2(mouseX, mouseY), m_playArea, 0.6f, randAngle, 0.08f, m_chunkManager, m_sheepList, m_dogList);
     m_dogList.push_back(dog);
   }
 
@@ -176,5 +176,5 @@ Sheep *SheepGame::getSheep(float x, float y)
     randY = (rand() % (int)m_screenHeight - 1);
   }
   float randAngle = ((rand() % 10000 / 10000.0f) * M_PI * 2.0f);
-  return new Sheep(Vector2(randX, randY), m_playArea, 0.45f, randAngle, 0.015f, 80, m_chunkManager, m_sheepList, m_dogList);
+  return new Sheep(Vector2(randX, randY), m_playArea, 0.3f, randAngle, 0.015f, 80, m_chunkManager, m_sheepList, m_dogList);
 }

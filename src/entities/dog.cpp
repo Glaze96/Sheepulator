@@ -11,7 +11,7 @@ Dog::Dog(
     std::vector<Movable *> &sheepList,
     std::vector<Movable *> &dogList) : Agent(startPos, playArea, speed, currentAngle, turnSpeed, chunkManager, sheepList, dogList)
 {
-  m_smartTick = 50;
+  m_smartTick = rand() % 200 + 50;
   m_viewRange = 120;
 }
 
@@ -37,16 +37,17 @@ void Dog::update()
     }
 
     setWantedAngle(difference.getAngleRad());
-    if (difference.magnitude() > 40)
-      moveForward();
+    if (difference.magnitude() > sqrt(nearestSheep.size()) + 10.0f)
+      moveForward(0.4f);
   }
   else // idle
   {
-    if (Time::Instance()->FrameCounter % m_smartTick * 2 == 0)
+    if (Time::Instance()->FrameCounter % m_smartTick == 0)
     {
+      std::cout << "idle" << std::endl;
       float r = ((rand() % 1000) / 1000.0f) * M_PI * 2.0f;
       setWantedAngle(r);
-      moveForward();
     }
   }
+  moveForward(0.6f);
 }

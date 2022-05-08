@@ -28,6 +28,7 @@ public:
 private:
   void moveWithFlock(const std::vector<Movable *> &flock);
 
+  bool isInFlock() override;
   void flock(); // FLOCK AI
 
 private:

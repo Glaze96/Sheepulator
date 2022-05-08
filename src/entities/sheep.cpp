@@ -118,3 +118,7 @@ void Sheep::flock()
     moveForward(0.2f);
   }
 }
+
+bool Sheep::isInFlock() {
+  return m_inFlock;
+}

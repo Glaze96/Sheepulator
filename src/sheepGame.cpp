@@ -88,15 +88,18 @@ bool SheepGame::update()
   }
 
   // Spawn sheep at point
-  if (input->isMousePressed(MouseButton::MOUSE_LEFT))
+  if (input->isMouseDown(MouseButton::MOUSE_LEFT))
   {
     int mouseX = input->getMouseX();
     int mouseY = input->getMouseY();
-    int randomX = (rand() % 10) - 5;
-    int randomY = (rand() % 10) - 5;
-    float randAngle = ((rand() % 10000 / 10000.0f) * M_PI * 2.0f);
-    ;
-    m_sheepList.push_back(getSheep(mouseX, mouseY));
+
+    for (int i = 0; i < 100; i++)
+    {
+      int randomX = (rand() % 100) - 50;
+      int randomY = (rand() % 100) - 50;
+      float randAngle = ((rand() % 10000 / 10000.0f) * M_PI * 2.0f);
+      m_sheepList.push_back(getSheep(mouseX, mouseY));
+    }
   }
 
   // Spawn dog at mouse pos

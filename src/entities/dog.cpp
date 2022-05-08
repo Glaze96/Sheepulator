@@ -17,12 +17,12 @@ Dog::Dog(
 
 void Dog::update()
 {
-  std::vector<Movable *> nearestSheep = m_chunkManager.getMovablesInChunkSurrounding(getPosition(), m_viewRange);
+  std::vector<Movable *> nearestSheep = m_chunkManager.getMovablesInChunkSurrounding(getPosition(), m_viewRange, true);
 
+  m_time += Time::Instance()->DeltaTime;
   // Hearding
   if (nearestSheep.size() > 20)
   {
-    m_time += Time::Instance()->DeltaTime;
     int numSheep = nearestSheep.size();
     for (auto &sheep : nearestSheep)
     {
@@ -32,16 +32,15 @@ void Dog::update()
 
     Vector2 flockCenter = findFlockCenter(nearestSheep);
     // Vector2 difference = flockCenter - getPosition();
-    
-    // TODO: FIX TANGENT PROBLEM
+
+    // 1. make bigger circles for bigger flocks
+    // 2. one dog per flock
     Vector2 penPosition = Vector2(Settings::SCREEN_WIDTH / 2, Settings::SCREEN_HEIGHT / 2);
     Vector2 penFlockDirection = (penPosition - flockCenter).normalized();
-    Vector2 wantedFlockPosition = flockCenter - (penFlockDirection * 50.0f);
+    Vector2 test = Vector2::VectorFromAngle(penFlockDirection.getAngleRad() + sin(m_time) * M_PI * 0.45f).normalized() * 50.0f;
+    Vector2 wantedFlockPosition = flockCenter - test;
 
-    Vector2 tangent = Vector2::VectorFromAngle(penFlockDirection.getAngleRad() * (M_PI / 2.0f));
-    float offsetAngle = sin(m_time * M_PI * 0.5f) * sqrt(numSheep) * 2.0f;
-    std::cout << offsetAngle << std::endl;
-    moveTowardsPosition(wantedFlockPosition + tangent * offsetAngle);
+    moveTowardsPosition(wantedFlockPosition);
   }
   else // idle
   {

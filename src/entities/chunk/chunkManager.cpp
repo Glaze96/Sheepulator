@@ -1,4 +1,5 @@
 #include "chunkManager.h"
+#include "../sheep.h"
 
 ChunkManager::ChunkManager()
 {
@@ -50,7 +51,7 @@ std::vector<Movable *> ChunkManager::getMovablesInChunk(Chunk *chunk)
   return std::vector<Movable *>();
 }
 
-std::vector<Movable *> ChunkManager::getMovablesInChunkSurrounding(const Vector2 &movablePosition, float viewRange)
+std::vector<Movable *> ChunkManager::getMovablesInChunkSurrounding(const Vector2 &movablePosition, float viewRange, bool flockOnly)
 {
   std::vector<Movable *> finalMovables;
   int chunkPosX = movablePosition.X / (float)m_chunkWidth;
@@ -67,9 +68,17 @@ std::vector<Movable *> ChunkManager::getMovablesInChunkSurrounding(const Vector2
 
       for (auto &movable : movables)
       {
+
         if ((movable->getPosition() - movablePosition).magnitude() < viewRange)
         {
-          finalMovables.push_back(movable);
+          if (flockOnly && movable->isInFlock())
+          {
+            finalMovables.push_back(movable);
+          }
+          else
+          {
+            finalMovables.push_back(movable);
+          }
         }
       }
     }
